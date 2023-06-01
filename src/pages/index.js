@@ -1,29 +1,31 @@
-const inter = Inter({ subsets: ['latin'] })
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
+const inter = Inter({ subsets: ["latin"] });
+import { Inter } from "next/font/google";
+import styles from "@/styles/Home.module.css";
 ///////////////////////////////////////////////////////////////////
 
-import React, { useState } from 'react';
-import Thumbnail from '@/components/thumbnail';
-import Modal from '@/components/modal';
+import React, { useState } from "react";
+import Thumbnail from "@/components/thumbnail";
+import Modal from "@/components/modal";
+import { DetectEmoji } from "@/components/DetectEmoji";
+import { Bundle } from "@/components/Bundle";
 
 ///////////////////////////////////////////////////////
 // samples
 const contentList = [
   {
     contentId: 1,
-    contentSrc: 'assets/image1.jpg',
-    replyList: ['😄', '😍', '🥰'],
+    contentSrc: "assets/image1.jpg",
+    replyList: ["😄", "😍", "🥰"],
   },
   {
     contentId: 2,
-    contentSrc: 'assets/image2.jpg',
-    replyList: ['😄', '😍', '🥰'],
+    contentSrc: "assets/image2.jpg",
+    replyList: ["😄", "😍", "🥰"],
   },
   {
     contentId: 3,
-    contentSrc: 'assets/image3.jpg',
-    replyList: ['😄', '😍', '🥰'],
+    contentSrc: "assets/image3.jpg",
+    replyList: ["😄", "😍", "🥰"],
   },
 ];
 ///////////////////////////////////////////////////
@@ -80,19 +82,18 @@ export default function Home() {
   // replyData 업로드하기
   // const uploadReply = async (replyData) => {
   //   const { contentId, replyId, timestamp, replyTxt } = replyData;
-  
+
   //   try {
   //     // Get the reference to the 'replies' subcollection of the specific content document
   //     const contentRef = doc(db, 'facemo', contentId);
   //     const repliesRef = collection(contentRef, 'replies');
-  
+
   //     // Create a new reply document with the given data
   //     const newReply = {
   //       timestamp: timestamp,
   //       replyTxt: replyTxt,
   //     };
-      
-    
+
   // }
 
   return (
