@@ -3,11 +3,9 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 ///////////////////////////////////////////////////////////////////
 
-import React, { useState } from "react";
-import Thumbnail from "@/components/thumbnail";
-import Modal from "@/components/modal";
-import { DetectEmoji } from "@/components/DetectEmoji";
-import { Bundle } from "@/components/Bundle";
+import React, { useState } from 'react';
+import Thumbnail from '@/components/Thumbnail';
+import Modal from '@/components/Modal';
 
 ///////////////////////////////////////////////////////
 // samples
@@ -28,6 +26,19 @@ const contentList = [
     replyList: ["😄", "😍", "🥰"],
   },
 ];
+
+// { contentId, replyId, replyEmoji, replyTxt, timestamp }
+const replyList = [
+  {contentId:1, replyId:1, replyEmoji:'😄', replyTxt:'', timestamp:''},
+  {contentId:1, replyId:2, replyEmoji:'😍', replyTxt:'', timestamp:''},
+  {contentId:1, replyId:3, replyEmoji:'🥰', replyTxt:'', timestamp:''},
+  {contentId:2, replyId:4, replyEmoji:'😄', replyTxt:'', timestamp:''},
+  {contentId:2, replyId:5, replyEmoji:'😍', replyTxt:'', timestamp:''},
+  {contentId:2, replyId:6, replyEmoji:'🥰', replyTxt:'', timestamp:''},
+  {contentId:3, replyId:7, replyEmoji:'😄', replyTxt:'', timestamp:''},
+  {contentId:3, replyId:8, replyEmoji:'😍', replyTxt:'', timestamp:''},
+  {contentId:3, replyId:9, replyEmoji:'🥰', replyTxt:'', timestamp:''},
+]
 ///////////////////////////////////////////////////
 // firebase
 // import { db } from "@/firebase";
@@ -112,6 +123,7 @@ export default function Home() {
       {modalOpen && (
         <Modal
           contentList={contentList}
+          replyList={replyList}
           currentContentId={currentContentId}
           closeModal={closeModal}
         />

@@ -14,7 +14,7 @@ const enableCamera = async (videoRef) => {
   }
 };
 
-export const Bundle = () => {
+const Bundle = ({closeBundle}) => {
   const videoRef = useRef(null);
   const [capturedDataURL, setCapturedDataURL] = useState(null);
   const [isStreaming, setIsStreaming] = useState(true);
@@ -108,7 +108,10 @@ export const Bundle = () => {
   };
 
   return (
-    <div>
+    <div className="w-full h-full flex items-center justify-center bg-gray-200">
+      <div>
+        {/* content */}
+        <div>
       {isStreaming ? (
         <video id="videoElement" autoPlay ref={videoRef}></video>
       ) : (
@@ -139,5 +142,18 @@ export const Bundle = () => {
         <button onClick={capturePhoto}>Capture and Save</button>
       )}
     </div>
+
+        {/* close Bundle button */}
+        <button
+          className="bg-blue-500 text-white px-2 rounded mt-4"
+          onClick={closeBundle}
+        >
+          Not now!
+        </button>
+
+      </div>
+    </div>
   );
-};
+}
+
+export default Bundle;
