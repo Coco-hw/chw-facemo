@@ -112,35 +112,35 @@ const Bundle = ({closeBundle}) => {
       <div>
         {/* content */}
         <div>
-      {isStreaming ? (
-        <video id="videoElement" autoPlay ref={videoRef}></video>
-      ) : (
-        <div>
-          <h2>Camera Stream Stopped</h2>
-          {capturedDataURL ? (
-            <div>
-              <canvas
-                ref={canvasRef}
-                className="bg-transparent absolute"
-                width="940"
-                height="650"
-              />
-              <img
-                src={capturedDataURL}
-                alt="Captured"
-                ref={imgRef}
-                onLoad={handleImgLoad}
-              />
-              <button onClick={retakePhoto}>Retake</button>
-            </div>
-          ) : (
-            <p>No captured image available.</p>
-          )}
-        </div>
-      )}
-      {isStreaming && !capturedDataURL && (
-        <button onClick={capturePhoto}>Capture and Save</button>
-      )}
+        {isStreaming ? (
+          <video id="videoElement" autoPlay ref={videoRef}></video>
+        ) : (
+          <div>
+            <h2>Camera Stream Stopped</h2>
+            {capturedDataURL ? (
+              <div>
+                <canvas
+                  ref={canvasRef}
+                  className="bg-transparent absolute"
+                  width="940"
+                  height="650"
+                />
+                <img
+                  src={capturedDataURL}
+                  alt="Captured"
+                  ref={imgRef}
+                  onLoad={handleImgLoad}
+                />
+                <button onClick={retakePhoto}>Retake</button>
+              </div>
+            ) : (
+              <p>No captured image available.</p>
+            )}
+          </div>
+        )}
+        {isStreaming && !capturedDataURL && (
+          <button onClick={capturePhoto}>Capture and Save</button>
+        )}
     </div>
 
         {/* close Bundle button */}
