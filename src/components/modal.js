@@ -1,28 +1,39 @@
 import React, { useState } from 'react';
-import Camera from '@/components/camera';
+import Bundle from '@/components/Bundle';
+// import Camera from '@/components/Camera';
 
 // return hovering canvas with content image, camera, replyList
-const Modal = ({ contentList, currentContentId, closeModal }) => {
-  // find content from contentList which matches currentContentId
-  const content = contentList.find((item) => item.contentId === currentContentId);
+const Modal = ({ contentList, replyList, currentContentId, closeModal }) => {
+  // content of replyList:
+  // const contentList = [{contentId: 1, contentSrc: 'assets/image1.jpg'}, ... ]
+  
+  // // content of replyList:
+  // const replyList = [ {contentId:1, replyId:1, replyEmoji:'😄', replyTxt:'', timestamp:''}, ... ]
 
-  if (!content) {
+  // find current content from contentList which matches currentContentId
+  const currentContent = contentList.find((item) => item.contentId === currentContentId);
+  // find current replyList from replyList which matches currentContentId
+  const currentReplyList = replyList.filter((item) => item.contentId === currentContentId);
+
+  if (!currentContent) {
     return null;
   }
 
-  // get contentSrc , replyList from content
-  const { contentSrc, replyList } = content;
-  // if showCamera===true: show <Camera> instead of replyList
-  const [showCamera, setShowCamera] = useState(true);
+  // if showBundle===true: show <Bundle> instead of replyList
+  const [showBundle, setShowBundle] = useState(true);
 
-  // function to deactivate showCamera
-  const handleCameraClick = () => {
-    setShowCamera(false);
+  // function to deactivate showBundle
+  const closeBundle = () => {
+    setShowBundle(false);
+  };
+
+  const openBundle = () => {
+    setShowBundle(true);
   };
 
   // Render
   return (
-    <div className="fixed inset-0 flex justify-center items-center z-10">
+    <div className="fixed inset-0 flex justify-center items-center z-10 pt-8">
       <div className="relative w-2/3 bg-white rounded-lg p-4">
 
         {/* close button */}
@@ -30,32 +41,39 @@ const Modal = ({ contentList, currentContentId, closeModal }) => {
           X
         </button>
 
-        {/* image and replyList(Camera) box */}
+        {/* image and {Bundle or replyList} box */}
         <div className="flex">
 
           {/* contentSrc(image) */}
           <div className="w-2/3">
             <img
-              src={contentSrc}
+              src={currentContent.contentSrc}
               alt={`Content ${currentContentId}`}
-              style={{ width: '300px', height: '300px', objectFit: 'cover' }}
+              style={{ width: '500px', height: '700px', objectFit: 'cover' }}
             />
           </div>
 
-          {/* Camera or replyList */}
-          {showCamera ? (
+          {/* Bundle or emojiList */}
+          {showBundle ? (
             <div>
               <div className="h-full flex justify-center items-center">
-                <Camera onCameraClick={handleCameraClick} />
+                <Bundle closeBundle={closeBundle} openBundle={openBundle} />
               </div>
             </div>
           ) : (
             <div className="bg-gray-200">
+              {/* emoji list */}
               <ul>
-                {replyList.map((reply, index) => (
-                  <li key={index}>{reply}</li>
+                {currentReplyList.map((item) => (
+                  <li key={item.replyId}>{item.replyEmoji}</li>
                 ))}
               </ul>
+              {/* retake pic button */}
+              <button 
+              className="bg-blue-500 text-white px-2 rounded mt-4"
+              onClick={openBundle}>
+                retake picture
+              </button>
             </div>
           )}
         
