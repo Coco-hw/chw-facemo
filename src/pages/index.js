@@ -3,9 +3,9 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 ///////////////////////////////////////////////////////////////////
 
-import React, { useState } from 'react';
-import Thumbnail from '@/components/Thumbnail';
-import Modal from '@/components/Modal';
+import React, { useState } from "react";
+import Thumbnail from "@/components/Thumbnail";
+import Modal from "@/components/Modal";
 
 ///////////////////////////////////////////////////////
 // samples
@@ -13,17 +13,17 @@ const contentList = [
   {
     contentId: 1,
     contentSrc: "assets/image1.jpg",
-    contentTxt: ""
+    contentTxt: "",
   },
   {
     contentId: 2,
     contentSrc: "assets/image2.jpg",
-    contentTxt: ""
+    contentTxt: "",
   },
   {
     contentId: 3,
     contentSrc: "assets/image3.jpg",
-    contentTxt: ""
+    contentTxt: "",
   },
 ];
 
@@ -38,7 +38,7 @@ const replyList = [
   // {contentId:3, replyId:7, replyEmoji:'😄', replyTxt:'', timestamp:''},
   // {contentId:3, replyId:8, replyEmoji:'😍', replyTxt:'', timestamp:''},
   // {contentId:3, replyId:9, replyEmoji:'🥰', replyTxt:'', timestamp:''},
-]
+];
 ///////////////////////////////////////////////////
 // firebase
 // import { db } from "@/firebase";
@@ -92,8 +92,14 @@ export default function Home() {
 
   // replyData 업로드하기
   const uploadReply = (replyData) => {
-    replyList.push({ contentId:replyData.contentId, replyId:replyData.replyId, replyEmoji:replyData.replyEmoji, replyTxt:replyData.replyTxt, timestamp:replyData.timestamp})
-  }
+    replyList.push({
+      contentId: replyData.contentId,
+      replyId: replyData.replyId,
+      replyEmoji: replyData.replyEmoji,
+      replyTxt: replyData.replyTxt,
+      timestamp: replyData.timestamp,
+    });
+  };
   // const uploadReply = async (replyData) => {
   //   const { contentId, replyId, timestamp, replyTxt } = replyData;
 
