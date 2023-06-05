@@ -13,31 +13,31 @@ const contentList = [
   {
     contentId: 1,
     contentSrc: "assets/image1.jpg",
-    replyList: ["😄", "😍", "🥰"],
+    contentTxt: ""
   },
   {
     contentId: 2,
     contentSrc: "assets/image2.jpg",
-    replyList: ["😄", "😍", "🥰"],
+    contentTxt: ""
   },
   {
     contentId: 3,
     contentSrc: "assets/image3.jpg",
-    replyList: ["😄", "😍", "🥰"],
+    contentTxt: ""
   },
 ];
 
 // { contentId, replyId, replyEmoji, replyTxt, timestamp }
 const replyList = [
-  {contentId:1, replyId:1, replyEmoji:'😄', replyTxt:'', timestamp:''},
-  {contentId:1, replyId:2, replyEmoji:'😍', replyTxt:'', timestamp:''},
-  {contentId:1, replyId:3, replyEmoji:'🥰', replyTxt:'', timestamp:''},
-  {contentId:2, replyId:4, replyEmoji:'😄', replyTxt:'', timestamp:''},
-  {contentId:2, replyId:5, replyEmoji:'😍', replyTxt:'', timestamp:''},
-  {contentId:2, replyId:6, replyEmoji:'🥰', replyTxt:'', timestamp:''},
-  {contentId:3, replyId:7, replyEmoji:'😄', replyTxt:'', timestamp:''},
-  {contentId:3, replyId:8, replyEmoji:'😍', replyTxt:'', timestamp:''},
-  {contentId:3, replyId:9, replyEmoji:'🥰', replyTxt:'', timestamp:''},
+  // {contentId:1, replyId:1, replyEmoji:'😄', replyTxt:'', timestamp:''},
+  // {contentId:1, replyId:2, replyEmoji:'😍', replyTxt:'', timestamp:''},
+  // {contentId:1, replyId:3, replyEmoji:'🥰', replyTxt:'', timestamp:''},
+  // {contentId:2, replyId:4, replyEmoji:'😄', replyTxt:'', timestamp:''},
+  // {contentId:2, replyId:5, replyEmoji:'😍', replyTxt:'', timestamp:''},
+  // {contentId:2, replyId:6, replyEmoji:'🥰', replyTxt:'', timestamp:''},
+  // {contentId:3, replyId:7, replyEmoji:'😄', replyTxt:'', timestamp:''},
+  // {contentId:3, replyId:8, replyEmoji:'😍', replyTxt:'', timestamp:''},
+  // {contentId:3, replyId:9, replyEmoji:'🥰', replyTxt:'', timestamp:''},
 ]
 ///////////////////////////////////////////////////
 // firebase
@@ -91,6 +91,9 @@ export default function Home() {
   // }
 
   // replyData 업로드하기
+  const uploadReply = (replyData) => {
+    replyList.push({ contentId:replyData.contentId, replyId:replyData.replyId, replyEmoji:replyData.replyEmoji, replyTxt:replyData.replyTxt, timestamp:replyData.timestamp})
+  }
   // const uploadReply = async (replyData) => {
   //   const { contentId, replyId, timestamp, replyTxt } = replyData;
 
@@ -126,6 +129,7 @@ export default function Home() {
           replyList={replyList}
           currentContentId={currentContentId}
           closeModal={closeModal}
+          uploadReply={uploadReply}
         />
       )}
     </div>

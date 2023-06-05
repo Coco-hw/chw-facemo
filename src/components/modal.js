@@ -3,7 +3,7 @@ import Bundle from '@/components/Bundle';
 // import Camera from '@/components/Camera';
 
 // return hovering canvas with content image, camera, replyList
-const Modal = ({ contentList, replyList, currentContentId, closeModal }) => {
+const Modal = ({ contentList, replyList, currentContentId, closeModal, uploadReply }) => {
   // content of replyList:
   // const contentList = [{contentId: 1, contentSrc: 'assets/image1.jpg'}, ... ]
   
@@ -57,7 +57,7 @@ const Modal = ({ contentList, replyList, currentContentId, closeModal }) => {
           {showBundle ? (
             <div>
               <div className="h-full flex justify-center items-center">
-                <Bundle closeBundle={closeBundle} openBundle={openBundle} />
+                <Bundle currentContentId={currentContentId} closeBundle={closeBundle} uploadReply={uploadReply}/>
               </div>
             </div>
           ) : (
