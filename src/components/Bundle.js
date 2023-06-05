@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 
+// 카메라를 로딩하는 함수
 const enableCamera = async (videoRef) => {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -14,7 +15,8 @@ const enableCamera = async (videoRef) => {
   }
 };
 
-const Bundle = ({closeBundle}) => {
+// Bundle 컴포넌트. 웹캠과 face-api 구동이 함께 들어가 있다.
+const Bundle = ({ closeBundle }) => {
   const videoRef = useRef(null);
   const [capturedDataURL, setCapturedDataURL] = useState(null);
   const [isStreaming, setIsStreaming] = useState(true);
@@ -31,6 +33,8 @@ const Bundle = ({closeBundle}) => {
 
     console.log(detections[0].detection.box);
     console.log(detections[0].expressions);
+    // console.log(detections[1].detection.box);
+    // console.log(detections[1].expressions);
 
     // canvas 초기화
     const canvas = canvasRef.current;
@@ -41,8 +45,8 @@ const Bundle = ({closeBundle}) => {
 
     const resizedDetections = faceapi.resizeResults(detections, canvas);
     faceapi.draw.drawDetections(canvas, resizedDetections);
-    // faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
-    // faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+    faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+    faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
   };
 
   useEffect(() => {
@@ -112,36 +116,36 @@ const Bundle = ({closeBundle}) => {
       <div>
         {/* content */}
         <div>
-        {isStreaming ? (
-          <video id="videoElement" autoPlay ref={videoRef}></video>
-        ) : (
-          <div>
-            <h2>Camera Stream Stopped</h2>
-            {capturedDataURL ? (
-              <div>
-                <canvas
-                  ref={canvasRef}
-                  className="bg-transparent absolute"
-                  width="940"
-                  height="650"
-                />
-                <img
-                  src={capturedDataURL}
-                  alt="Captured"
-                  ref={imgRef}
-                  onLoad={handleImgLoad}
-                />
-                <button onClick={retakePhoto}>Retake</button>
-              </div>
-            ) : (
-              <p>No captured image available.</p>
-            )}
-          </div>
-        )}
-        {isStreaming && !capturedDataURL && (
-          <button onClick={capturePhoto}>Capture and Save</button>
-        )}
-    </div>
+          {isStreaming ? (
+            <video id="videoElement" autoPlay ref={videoRef}></video>
+          ) : (
+            <div>
+              <h2>Camera Stream Stopped</h2>
+              {capturedDataURL ? (
+                <div>
+                  <canvas
+                    ref={canvasRef}
+                    className="bg-transparent absolute"
+                    width="940"
+                    height="650"
+                  />
+                  <img
+                    src={capturedDataURL}
+                    alt="Captured"
+                    ref={imgRef}
+                    onLoad={handleImgLoad}
+                  />
+                  <button onClick={retakePhoto}>Retake</button>
+                </div>
+              ) : (
+                <p>No captured image available.</p>
+              )}
+            </div>
+          )}
+          {isStreaming && !capturedDataURL && (
+            <button onClick={capturePhoto}>Capture and Save</button>
+          )}
+        </div>
 
         {/* close Bundle button */}
         <button
@@ -150,10 +154,9 @@ const Bundle = ({closeBundle}) => {
         >
           Not now!
         </button>
-
       </div>
     </div>
   );
-}
+};
 
 export default Bundle;
