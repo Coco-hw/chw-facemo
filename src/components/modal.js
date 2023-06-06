@@ -1,35 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Bundle from '@/components/Bundle';
-// import Camera from '@/components/Camera';
 
 // return hovering canvas with content image, camera, replyList
-const Modal = ({ contentList, replyList, currentContentId, closeModal, uploadReply }) => {
-  // content of replyList:
-  // const contentList = [{contentId: 1, contentSrc: 'assets/image1.jpg'}, ... ]
-  
-  // // content of replyList:
-  // const replyList = [ {contentId:1, replyId:1, replyEmoji:'😄', replyTxt:'', timestamp:''}, ... ]
+const Modal = ({ contentList, replyList, currentContentId, closeModal, bundleOpened, openBundle, closeBundle, uploadReply, intervalRef }) => {
 
-  // find current content from contentList which matches currentContentId
+  // find current content from contentList which matches currentContentId // contentList = [{contentId, contentSrc}, ... ]
   const currentContent = contentList.find((item) => item.contentId === currentContentId);
-  // find current replyList from replyList which matches currentContentId
-  const currentReplyList = replyList.filter((item) => item.contentId === currentContentId);
 
-  if (!currentContent) {
-    return null;
-  }
+  // find current replyList from replyList which matches currentContentId // replyList = [ {contentId, replyId, replyEmoji, replyTxt, timestamp}, ... ]
+  const [currentReplyList, setCurrentReplyList] = useState([]);
 
-  // if showBundle===true: show <Bundle> instead of replyList
-  const [showBundle, setShowBundle] = useState(true);
-
-  // function to deactivate showBundle
-  const closeBundle = () => {
-    setShowBundle(false);
-  };
-
-  const openBundle = () => {
-    setShowBundle(true);
-  };
+  // update replyList when first rendered & replyList updated
+  useEffect(()=>{
+    if (replyList){
+      setCurrentReplyList( replyList.filter((item) => item.contentId === currentContentId) );
+    }
+  }, [replyList]);
 
   // Render
   return (
@@ -54,10 +40,15 @@ const Modal = ({ contentList, replyList, currentContentId, closeModal, uploadRep
           </div>
 
           {/* Bundle or emojiList */}
-          {showBundle ? (
+          {bundleOpened ? (
             <div>
               <div className="h-full flex justify-center items-center">
-                <Bundle currentContentId={currentContentId} closeBundle={closeBundle} uploadReply={uploadReply}/>
+                <Bundle 
+                currentContentId={currentContentId}
+                closeBundle={closeBundle} 
+                uploadReply={uploadReply}
+                intervalRef={intervalRef}
+                />
               </div>
             </div>
           ) : (
