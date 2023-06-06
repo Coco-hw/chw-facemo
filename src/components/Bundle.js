@@ -174,7 +174,7 @@ const Bundle = ({ currentContentId, closeBundle, uploadReply }) => {
 
   // 바로 찍지 않을 경우
   const notNow = () => {
-    disableCamera();
+    disableCamera(videoRef);
     closeBundle();
   };
 
@@ -187,7 +187,7 @@ const Bundle = ({ currentContentId, closeBundle, uploadReply }) => {
       replyEmoji: currentEmoji,
       timestamp: Date.now(),
     });
-    disableCamera();
+    disableCamera(videoRef);
     closeBundle();
   };
 
@@ -196,25 +196,26 @@ const Bundle = ({ currentContentId, closeBundle, uploadReply }) => {
       <div>
         {/* content */}
         <div>
+          {/* if Streaming: video, else: capturedImage*/}
           {isStreaming ? (
             <video id="videoElement" autoPlay ref={videoRef}></video>
           ) : (
             <div>
-              <h2>Camera Stream Stopped</h2>
-              {capturedDataURL ? (
-                <div>
-                  <canvas
-                    ref={canvasRef}
-                    className="bg-transparent absolute"
-                    width="940"
-                    height="650"
-                  />
-                  <img
-                    src={capturedDataURL}
-                    alt="Captured"
-                    ref={imgRef}
-                    onLoad={handleImgLoad}
-                  />
+            <h2>Camera Stream Stopped</h2>
+            {capturedDataURL ? (
+              <div>
+                <canvas
+                  ref={canvasRef}
+                  className="bg-transparent absolute"
+                  width="940"
+                  height="650"
+                />
+                <img
+                  src={capturedDataURL}
+                  alt="Captured"
+                  ref={imgRef}
+                  onLoad={handleImgLoad}
+                />
                   <button onClick={retakePhoto}>Retake</button>
                   <button onClick={savePhoto}>OK</button>
                 </div>
