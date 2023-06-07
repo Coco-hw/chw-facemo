@@ -59,6 +59,7 @@ export default function Home() {
   // intervalRef에 할당된 interval을 멈추는 함수
   const stopInterval = async() => {
     clearInterval(intervalRef.current);
+    intervalRef.current = null;
   }
 
     // modal과 bundle을 열고 닫는 함수입니다.
