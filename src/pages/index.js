@@ -1,6 +1,7 @@
 const inter = Inter({ subsets: ["latin"] });
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
+import { Button } from "@material-tailwind/react";
 ///////////////////////////////////////////////////////////////////
 
 import React, { useState, useEffect, useRef } from "react";
@@ -58,9 +59,11 @@ export default function Home() {
   // 비디오 Ref를 담는 변수입니다.
   const videoRef = useRef(null);
   // 웹캠을 끄는 함수입니다.
-  const stopWebcam = async() => {
+  const stopWebcam = async () => {
     // videoRef가 null이 아닐 경우 실행
-    if (!videoRef.current) {return;}
+    if (!videoRef.current) {
+      return;
+    }
     // get stream
     const stream = await videoRef.current.srcObject;
     // delete track
@@ -71,13 +74,13 @@ export default function Home() {
       console.log("Error accessing the camera: " + error);
     }
     videoRef.current = null;
-  }
+  };
 
   // modal을 열고 닫는 함수입니다.
   const openModal = () => {
     setModalOpened(true);
-  }
-  const closeModal = async() => {
+  };
+  const closeModal = async () => {
     setModalOpened(false);
     setCurrentContentId(null);
     turnoffReply();
@@ -95,11 +98,11 @@ export default function Home() {
 
     //가져온 replyData를 replyList에 담습니다.
     results.docs.forEach((doc) => {
-      newReply.push({ ...doc.data(), justUpdated:false })
-    })
+      newReply.push({ ...doc.data(), justUpdated: false });
+    });
 
     setReplyList(newReply);
-  }
+  };
 
   // 마운트시 firebase에서 replyList 가져오기
   useEffect(() => {
@@ -117,7 +120,7 @@ export default function Home() {
   }
 
   // replyData 업로드하기
-  const uploadReply = async(replyData) => {
+  const uploadReply = async (replyData) => {
     // Firestore에 추가한 replyData를 저장합니다.
     const docRef = await addDoc(facemoCollection, {
       contentId: replyData.contentId,
@@ -125,7 +128,7 @@ export default function Home() {
       replyEmoji: replyData.replyEmoji,
       replyTxt: replyData.replyTxt,
       timestamp: replyData.timestamp,
-    }); 
+    });
 
     // 기존의 updatedStatus를 false로 변경합니다.
     turnoffReply();
@@ -145,7 +148,7 @@ export default function Home() {
 
   return (
     <div>
-      {/* Render thumbnails */}
+      <Button>Button</Button>;{/* Render thumbnails */}
       {contentList.map((content) => (
         <Thumbnail
           key={content.contentId}
@@ -154,7 +157,6 @@ export default function Home() {
           setCurrentContentId={setCurrentContentId}
         />
       ))}
-
       {/* Render modal */}
       {modalOpened && (
         <Modal

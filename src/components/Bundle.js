@@ -25,7 +25,7 @@ const mapEmoji = {
 };
 
 const Bundle = ({
-  closeBundle, 
+  closeBundle,
   setCurrentEmojiRef,
   saveReply,
   inputTxt,
@@ -34,7 +34,6 @@ const Bundle = ({
   stopInterval, 
   videoRef
 }) => {
-
   // streaming status, reference
   const [isStreaming, setIsStreaming] = useState(true);
 
@@ -55,15 +54,15 @@ const Bundle = ({
 
     // face detection
     const detections = await faceapi
-    .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-    .withFaceLandmarks()
-    .withFaceExpressions();
+      .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+      .withFaceLandmarks()
+      .withFaceExpressions();
 
     // get current (bounding) video dimention
     var videoWidth = video.getBoundingClientRect().width;
     var videoHeight = video.getBoundingClientRect().height;
 
-    if(!videoWidth||!videoHeight){ 
+    if (!videoWidth || !videoHeight) {
       stopInterval();
       return;
     }
@@ -77,9 +76,11 @@ const Bundle = ({
     const resizedDetections = faceapi.resizeResults(detections, displaySize);
 
     // reset tempEmoji
-    var tempEmoji = []
+    var tempEmoji = [];
 
-    if(!resizedDetections.length){ return; }
+    if (!resizedDetections.length) {
+      return;
+    }
     // when detected:
 
     // get emoji and draw rectangle for each face
@@ -91,7 +92,7 @@ const Bundle = ({
       const emoji = mapEmoji[biggestOf(expressions)];
       // update tempEmoji
       tempEmoji.push(emoji);
-      
+
       // draw rectangles
       context.strokeStyle = "white";
       context.lineWidth = 5.0;
@@ -99,16 +100,13 @@ const Bundle = ({
       context.stroke();
       // draw emoji
       context.font = "50px Arial";
-      context.fillText(
-        emoji,
-        box.x + box.width / 2 - 25,
-        box.y - 20
-      );
+      context.fillText(emoji, box.x + box.width / 2 - 25, box.y - 20);
     });
-      // set currentEmoji to emojis(in string format)
-      setCurrentEmojiRef.current(tempEmoji.toString());
+    // set currentEmoji to emojis(in string format)
+    console.log(tempEmoji);
+    setCurrentEmojiRef.current(tempEmoji.join(""));
   };
-  
+
   // stream and set detect interval
   const streamDetect = async () => {
     // start webcam
@@ -116,21 +114,21 @@ const Bundle = ({
       video: true,
       audio: false,
     });
-    
+
     // get all faceapi models
     await Promise.all([
       faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
       faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
       faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
       faceapi.nets.faceExpressionNet.loadFromUri("/models"),
-      stopInterval()
+      stopInterval(),
     ]);
 
     // get video & canvas
     const video = videoRef.current;
     video.srcObject = stream;
     const canvas = document.getElementById("canvas");
-    
+
     // while video is playing
     video.addEventListener("play", async () => {
       setDetecting(true);
@@ -145,14 +143,14 @@ const Bundle = ({
       setDetecting(false);
       console.log("pause");
     });
-    
+
     video.addEventListener("ended", async () => {
       stopInterval();
       setDetecting(false);
       console.log("ended");
     });
   };
-  
+
   // activate streamDetact when first rendered & detecting staus becomes true
   useEffect(() => {
     console.log("useEffect");
@@ -170,6 +168,7 @@ const Bundle = ({
   };
 
   const restartVideo = () => {
+    video.play();
     // restart streaming
     video.play();
     setIsStreaming(true);
@@ -186,8 +185,8 @@ const Bundle = ({
   return (
     <div className="flex flex-col w-full h-full flex items-center justify-center bg-gray-200">
       <div>
-        <canvas id="canvas" className="bg-transparent absolute"/>
-        <video id="video" ref={videoRef} autoPlay/>
+        <canvas id="canvas" className="bg-transparent absolute" />
+        <video id="video" ref={videoRef} autoPlay />
       </div>
       {isStreaming
       ? <div>
@@ -207,7 +206,7 @@ const Bundle = ({
         </div>
       }
     </div>
-  )
-}
+  );
+};
 
 export default Bundle;
