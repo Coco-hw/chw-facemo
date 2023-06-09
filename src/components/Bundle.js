@@ -13,10 +13,9 @@ const biggestOf = (detectedExpressions) => {
   }
   return max;
 };
-
 // emotion을 emoji로 변환할 오브젝트 mapEmoji 설정
 const mapEmoji = {
-  angry: "👿",
+  angry: "angry.jpg",
   disgusted: "🤢",
   fearful: "😨",
   happy: "😊",
@@ -25,11 +24,14 @@ const mapEmoji = {
   surprised: "😲",
 };
 
-const Bundle = ({ currentContentId, closeBundle, uploadReply, intervalRef }) => {
-  // emoji를 저장할 useState, useRef 선언
-  const [currentEmoji, setCurrentEmoji] = useState("");
-  const setCurrentEmojiRef = useRef();
-  setCurrentEmojiRef.current = setCurrentEmoji;
+const Bundle = ({
+  closeBundle, 
+  setCurrentEmojiRef,
+  saveReply,
+  intervalRef, 
+  stopInterval, 
+  videoRef
+}) => {
 
   // streaming status, reference
   const [isStreaming, setIsStreaming] = useState(true);
@@ -39,22 +41,72 @@ const Bundle = ({ currentContentId, closeBundle, uploadReply, intervalRef }) => 
   const detectingRef = useRef();
   detectingRef.current = detecting;
 
-  // stoping interval reference
+  // stop interval reference
   const stopIntervalRef = useRef();
+  stopIntervalRef.current = stopInterval;
 
-  // save and upload reply (in index)
-  const saveReply = () => {
-    // { contentId, replyId, replyEmoji, replyTxt, timestamp }
-    uploadReply({
-      contentId: currentContentId,
-      replyId: Date.now(),
-      replyEmoji: currentEmoji,
-      replyTxt: "",
-      timestamp: Date.now(),
+  // detecting video (used in interval)
+  const detect = async (video, canvas) => {
+    // if(!detectingRef.current){return;}
+    // set context of canvas
+    const context = canvas.getContext("2d");
+
+    // face detection
+    const detections = await faceapi
+    .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+    .withFaceLandmarks()
+    .withFaceExpressions();
+
+    // get current (bounding) video dimention
+    var videoWidth = video.getBoundingClientRect().width;
+    var videoHeight = video.getBoundingClientRect().height;
+
+    if(!videoWidth||!videoHeight){ 
+      stopInterval();
+      return;
+    }
+
+    // match canvas dimention with video
+    const displaySize = { width: videoWidth, height: videoHeight };
+
+    faceapi.matchDimensions(canvas, displaySize);
+
+    // resize detection according to canvas
+    const resizedDetections = faceapi.resizeResults(detections, displaySize);
+
+    // reset tempEmoji
+    var tempEmoji = []
+
+    if(!resizedDetections.length){ return; }
+    // when detected:
+
+    // get emoji and draw rectangle for each face
+    resizedDetections.forEach((detection) => {
+      // get box dimention
+      const box = detection.detection.box;
+      // get expressions & emoji
+      const expressions = detection.expressions;
+      const emoji = mapEmoji[biggestOf(expressions)];
+      // update tempEmoji
+      tempEmoji.push(emoji);
+      
+      // draw rectangles
+      context.strokeStyle = "white";
+      context.lineWidth = 5.0;
+      context.rect(box.x, box.y, box.width, box.height);
+      context.stroke();
+      // draw emoji
+      context.font = "50px Arial";
+      context.fillText(
+        emoji,
+        box.x + box.width / 2 - 25,
+        box.y - 20
+      );
     });
-    console.log(currentEmoji);
+      // set currentEmoji to emojis(in string format)
+      setCurrentEmojiRef.current(tempEmoji.toString());
   };
-
+  
   // stream and set detect interval
   const streamDetect = async () => {
     // start webcam
@@ -62,11 +114,6 @@ const Bundle = ({ currentContentId, closeBundle, uploadReply, intervalRef }) => 
       video: true,
       audio: false,
     });
-
-    // get video & canvas
-    const video = document.getElementById("video");
-    video.srcObject = stream;
-    const canvas = document.getElementById("canvas");
     
     // get all faceapi models
     await Promise.all([
@@ -74,113 +121,59 @@ const Bundle = ({ currentContentId, closeBundle, uploadReply, intervalRef }) => 
       faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
       faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
       faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+      stopInterval()
     ]);
 
-    // detecting video (used in interval)
-    const detect = async (video, canvas) => {
-      // set context of canvas
-      const context = canvas.getContext("2d");
-
-      // face detection
-      const detections = await faceapi
-      .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-      .withFaceLandmarks()
-      .withFaceExpressions();
-
-      // get current (bounding) video dimention
-      var videoWidth = video.getBoundingClientRect().width;
-      var videoHeight = video.getBoundingClientRect().height;
-
-      if(!videoWidth||!videoHeight){
-        return;
-      }
-
-      // match canvas dimention with video
-      const displaySize = { width: videoWidth, height: videoHeight };
-
-      faceapi.matchDimensions(canvas, displaySize);
-
-      // resize detection according to canvas
-      const resizedDetections = faceapi.resizeResults(detections, displaySize);
-
-      // when detected, clear currentEmojiList
-      if(resizedDetections.length) {
-        var tempEmoji = ""
-
-        // get emoji and draw rectangle for each face
-        resizedDetections.forEach((detection) => {
-          // get box dimention
-          const box = detection.detection.box;
-          // get expressions & emoji
-          const expressions = detection.expressions;
-          const emoji = mapEmoji[biggestOf(expressions)]
-          // update tempEmoji
-          tempEmoji += emoji;
-          
-          // draw rectangles
-          context.strokeStyle = "white";
-          context.lineWidth = 5.0;
-          context.rect(box.x, box.y, box.width, box.height);
-          context.stroke();
-          // draw emoji
-          context.font = "50px Arial";
-          context.fillText(
-            emoji,
-            box.x + box.width / 2 - 25,
-            box.y - 20
-          );
-        });
-        // set currentEmoji to emojis(in string format)
-        setCurrentEmojiRef.current(tempEmoji);
-      }
-    }
-
-    const stopInterval = () => {
-      clearInterval(intervalRef.current);
-    }
-    stopIntervalRef.current = stopInterval;
-
+    // get video & canvas
+    const video = videoRef.current;
+    video.srcObject = stream;
+    const canvas = document.getElementById("canvas");
+    
     // while video is playing
     video.addEventListener("play", async () => {
+      setDetecting(true);
+      console.log("play");
       intervalRef.current = setInterval(async () => {
-        console.log("interval on");
         detect(video, canvas);
       }, 100);
     });
-  };
 
-  // activate streamDetact when first rendered
+    video.addEventListener("pause", async () => {
+      setDetecting(false);
+      console.log("pause");
+      stopInterval();
+    });
+    
+    video.addEventListener("ended", async () => {
+      setDetecting(false);
+      console.log("ended");
+      stopInterval();
+    });
+  };
+  
+  // activate streamDetact when first rendered & detecting staus becomes true
   useEffect(() => {
     streamDetect();
   }, []);
 
-  const stopVideo = () => {
+  const pauseVideo = () => {
+    // stop detecting
+    setDetecting(false);
     // pause video
     const video = document.getElementById("video");
     video.pause();
-    // set current streaming status: false
+    // stop streaming
     setIsStreaming(false);
   };
 
   const restartVideo = () => {
-    // restart detecting
-    streamDetect();
-    // set current streaming status: true
+    // restart streaming
     setIsStreaming(true);
+    // restart detecting
+    setDetecting(true);
   };
 
   const savePhoto = () => {
-    // stop detecting
-    setDetecting(false);
-    // delete track
-    const video = document.getElementById("video");
-    try {
-      const tracks = video.srcObject.getTracks();
-      tracks[0].stop();
-    } catch (error) {
-      console.log("Error accessing the camera: " + error);
-    }
-
     // save reply and close bundle
     saveReply();
     closeBundle();
@@ -188,12 +181,15 @@ const Bundle = ({ currentContentId, closeBundle, uploadReply, intervalRef }) => 
 
   return (
     <div className="w-full h-full flex items-center justify-center bg-gray-200">
-      <canvas id="canvas" className="bg-transparent absolute"/>
-      <video id="video" autoPlay/>
+      <div>
+        <canvas id="canvas" className="bg-transparent absolute"/>
+        <video id="video" ref={videoRef} autoPlay/>
+      </div>
+
       <div>
         {isStreaming
         ? <div>
-          <button onClick={stopVideo}>This emoji!</button>
+          <button onClick={pauseVideo}>This emoji!</button>
           <button onClick={closeBundle}>Return to emojiList</button>
           </div>
         : <div>
