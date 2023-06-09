@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import Bundle from "@/components/Bundle";
 import Emoji from "@/components/Emoji";
+import { Button } from "@material-tailwind/react";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 
 // return hovering canvas with content image, camera, replyList
 const Modal = ({
@@ -78,29 +80,29 @@ const Modal = ({
   // Render
   return (
     <div className="fixed inset-0 flex justify-center items-center z-10 pt-8">
-      <div className="relative w-2/3 bg-white rounded-lg p-4">
+      <div className="relative bg-transparent w-4/5">
         {/* close button */}
         <button
           className="absolute top-2 right-2 text-gray-500"
           onClick={closeBundleModal}
         >
-          X
+          <XMarkIcon strokeWidth={2} className="h-10 w-10"></XMarkIcon>
         </button>
 
         {/* image and {Bundle or replyList} box */}
-        <div className="flex">
+        <div className="flex flex-row">
           {/* contentSrc(image) */}
-          <div className="w-2/3">
+          <div className="">
             <img
               src={currentContent.contentSrc}
               alt={`Content ${currentContentId}`}
-              style={{ width: "500px", height: "700px", objectFit: "cover" }}
+              style={{ width: "600px", height: "600px", objectFit: "cover" }}
             />
           </div>
 
           {/* Bundle or emojiList */}
           {bundleOpened ? (
-            <div>
+            <div className="basis-1/2">
               <div className="h-full flex justify-center items-center">
                 <Bundle
                 closeBundle={closeBundle}
@@ -115,20 +117,23 @@ const Modal = ({
               </div>
             </div>
           ) : (
-            <div className="bg-gray-200">
+            <div className="basis-1/2 bg-gray-200">
               {/* emoji list */}
-
-              {currentReplyList.map((replyData) => (
-                <Emoji replyData={replyData} />
-              ))}
+              <div className="flex flex-wrap">
+                {currentReplyList.map((replyData) => (
+                  <Emoji replyData={replyData} />
+                ))}
+              </div>
 
               {/* retake pic button */}
-              <button
-                className="bg-blue-500 text-white px-2 rounded mt-4"
+              <Button
+                variant="filled"
+                size="lg"
+                color="white"
                 onClick={openBundle}
               >
                 retake picture
-              </button>
+              </Button>
             </div>
           )}
         </div>
