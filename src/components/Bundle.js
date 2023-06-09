@@ -80,6 +80,10 @@ const Bundle = ({closeBundle}) => {
             const dataURL = reader.result;
             setCapturedDataURL(dataURL);
             setIsStreaming(false); // Stop streaming after capturing image
+
+            const tracks = video.srcObject.getTracks();
+            tracks.forEach((track) => track.stop()); // Stop the camera tracks
+            video.srcObject = null; // Clear the video source object
           };
           reader.readAsDataURL(blob);
         } else {
