@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
+import { Button } from "@material-tailwind/react";
 
 // biggest emotion을 추출할 함수 biggestOf 선언
 const biggestOf = (detectedExpressions) => {
@@ -15,7 +16,7 @@ const biggestOf = (detectedExpressions) => {
 };
 // emotion을 emoji로 변환할 오브젝트 mapEmoji 설정
 const mapEmoji = {
-  angry: "angry.jpg",
+  angry: "😡",
   disgusted: "🤢",
   fearful: "😨",
   happy: "😊",
@@ -28,6 +29,8 @@ const Bundle = ({
   closeBundle,
   setCurrentEmojiRef,
   saveReply,
+  inputTxt,
+  setInputTxt,
   intervalRef,
   stopInterval,
   videoRef,
@@ -46,7 +49,9 @@ const Bundle = ({
 
   // detecting video (used in interval)
   const detect = async (video, canvas) => {
-    // if(!detectingRef.current){return;}
+    if (!detectingRef.current) {
+      return;
+    }
     // set context of canvas
     const context = canvas.getContext("2d");
 
@@ -137,20 +142,21 @@ const Bundle = ({
     });
 
     video.addEventListener("pause", async () => {
+      stopInterval();
       setDetecting(false);
       console.log("pause");
-      stopInterval();
     });
 
     video.addEventListener("ended", async () => {
+      stopInterval();
       setDetecting(false);
       console.log("ended");
-      stopInterval();
     });
   };
 
   // activate streamDetact when first rendered & detecting staus becomes true
   useEffect(() => {
+    console.log("useEffect");
     streamDetect();
   }, []);
 
@@ -165,8 +171,8 @@ const Bundle = ({
   };
 
   const restartVideo = () => {
-    video.play();
     // restart streaming
+    video.play();
     setIsStreaming(true);
     // restart detecting
     setDetecting(true);
@@ -179,25 +185,37 @@ const Bundle = ({
   };
 
   return (
-    <div className="w-full h-full flex items-center justify-center bg-gray-200">
+    <div className="flex flex-col w-full h-full flex items-center justify-center bg-gray-200">
       <div>
         <canvas id="canvas" className="bg-transparent absolute" />
         <video id="video" ref={videoRef} autoPlay />
       </div>
-
-      <div>
-        {isStreaming ? (
-          <div>
-            <button onClick={pauseVideo}>This emoji!</button>
-            <button onClick={closeBundle}>Return to emojiList</button>
-          </div>
-        ) : (
-          <div>
-            <button onClick={restartVideo}>Try Again</button>
-            <button onClick={savePhoto}>OK</button>
-          </div>
-        )}
-      </div>
+      {isStreaming ? (
+        <div className="w-full flex flex-row justify-around">
+          <Button className="basis-1/2" color="white" onClick={pauseVideo}>
+            This emoji!
+          </Button>
+          <Button className="basis-1/2" color="white" onClick={closeBundle}>
+            Return to emojiList
+          </Button>
+        </div>
+      ) : (
+        <div className="w-full flex flex-row justify-around">
+          {/* 댓글을 입력받는 텍스트 필드입니다. */}
+          <input
+            type="text"
+            className="shadow-lg ml-2 p-1 grow mb-4 border border-gray-300 rounded"
+            value={inputTxt}
+            onChange={(e) => setInputTxt(e.target.value)}
+          />
+          <Button className="basis-1/3" color="white" onClick={restartVideo}>
+            Try Again
+          </Button>
+          <Button className="basis-1/3" color="white" onClick={savePhoto}>
+            OK
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

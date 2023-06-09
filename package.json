@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.18",
     "@material-tailwind/react": "^2.0.1",
     "face-api.js": "^0.22.2",
     "firebase": "^9.22.1",

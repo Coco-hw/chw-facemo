@@ -36,11 +36,7 @@ const Emoji = ({ replyData }) => {
 
   return (
     <div>
-      <div
-        className="flex flex-wrap"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
+      <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <Tooltip
           content="Material Tailwind"
           animate={{
