@@ -8,3 +8,5 @@ const EmojiAlert = () => {
     </div>
   );
 }
+
+export default EmojiAlert;
