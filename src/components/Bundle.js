@@ -41,6 +41,16 @@ const Bundle = ({
   const [detecting, setDetecting] = useState(true);
   const detectingRef = useRef();
   detectingRef.current = detecting;
+  // detected status, reference
+  const [detected, setDetected] = useState(false);
+  const setDetectedRef = useRef();
+  setDetectedRef.current = setDetected;
+
+  // emoji alert status
+  const [emojiAlert, setEmojiAlert] = useState(false);
+
+  // text alert status
+  const [textAlert, setTextAlert] = useState(false);
 
   // stop interval reference
   const stopIntervalRef = useRef();
@@ -78,20 +88,22 @@ const Bundle = ({
     // reset tempEmoji
     var tempEmoji = [];
 
-    if (!resizedDetections.length) {
+    // if not detected:
+    if (!resizedDetections.length){
+      setDetectedRef.current(false);
       return;
     }
     // when detected:
+    setDetectedRef.current(true);
 
     // get emoji and draw rectangle for each face
     resizedDetections.forEach((detection) => {
       // get box dimention
       const box = detection.detection.box;
       // get expressions & emoji
-      const expressions = detection.expressions;
-      const emoji = mapEmoji[biggestOf(expressions)];
+      const expression = biggestOf(detection.expressions);
       // update tempEmoji
-      tempEmoji.push(emoji);
+      tempEmoji.push(expression);
 
       // draw rectangles
       context.strokeStyle = "white";
@@ -99,12 +111,13 @@ const Bundle = ({
       context.rect(box.x, box.y, box.width, box.height);
       context.stroke();
       // draw emoji
+      const emoji = mapEmoji[expression];
       context.font = "50px Arial";
       context.fillText(emoji, box.x + box.width / 2 - 25, box.y - 20);
     });
     // set currentEmoji to emojis(in string format)
     console.log(tempEmoji);
-    setCurrentEmojiRef.current(tempEmoji.join(""));
+    setCurrentEmojiRef.current(tempEmoji);
   };
 
   // stream and set detect interval
@@ -161,16 +174,14 @@ const Bundle = ({
     // stop detecting
     setDetecting(false);
     // pause video
-    const video = document.getElementById("video");
-    video.pause();
+    videoRef.current.pause();
     // stop streaming
     setIsStreaming(false);
   };
 
   const restartVideo = () => {
-    video.play();
     // restart streaming
-    video.play();
+    videoRef.current.play();
     setIsStreaming(true);
     // restart detecting
     setDetecting(true);
