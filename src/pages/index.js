@@ -80,6 +80,7 @@ export default function Home() {
   const closeModal = async() => {
     setModalOpened(false);
     setCurrentContentId(null);
+    turnoffReply();
   }
 
   // replyData 불러오기
@@ -106,6 +107,15 @@ export default function Home() {
     console.log(replyList);
   }, []);
 
+  // 기존의 updatedStatus를 false로 변경합니다.
+  const turnoffReply = () => {
+    const turnoffReplyList = replyList.map((reply)=>{
+      if (reply.justUpdated){ return {...reply, justUpdated:false}; }
+      else { return reply; }
+    });
+    setReplyList(turnoffReplyList);
+  }
+
   // replyData 업로드하기
   const uploadReply = async(replyData) => {
     // Firestore에 추가한 replyData를 저장합니다.
@@ -118,14 +128,11 @@ export default function Home() {
     }); 
 
     // 기존의 updatedStatus를 false로 변경합니다.
-    const originalReplyList = replyList.map((reply)=>{
-      if (reply.justUpdated){ return {...reply, justUpdated:false}; }
-      else { return reply; }
-    });
+    turnoffReply();
 
     // ReplyList를 업데이트합니다.
     setReplyList(
-      [...originalReplyList, {
+      [...replyList, {
       contentId: replyData.contentId,
       replyId: replyData.replyId,
       replyEmoji: replyData.replyEmoji,

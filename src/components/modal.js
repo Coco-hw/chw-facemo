@@ -14,6 +14,9 @@ const Modal = ({ contentList, replyList, currentContentId, closeModal, uploadRep
   const setCurrentEmojiRef = useRef();
   setCurrentEmojiRef.current = setCurrentEmoji;
 
+  // replyTxt를 저장할 useState 선언
+  const [inputTxt, setInputTxt] = useState("");
+
   // save and upload reply (in index)
   const saveReply = () => {
     // { contentId, replyId, replyEmoji, replyTxt, timestamp }
@@ -21,7 +24,7 @@ const Modal = ({ contentList, replyList, currentContentId, closeModal, uploadRep
       contentId: currentContentId,
       replyId: replyList.length,
       replyEmoji: currentEmoji,
-      replyTxt: "",
+      replyTxt: inputTxt,
       timestamp: Date.now(),
     });
     console.log(currentEmoji);
@@ -44,6 +47,7 @@ const Modal = ({ contentList, replyList, currentContentId, closeModal, uploadRep
   const closeBundle = async() => {
     // await stopInterval();
     await stopWebcam();
+    setInputTxt("");
     setBundleOpened(false);
   }
 
@@ -89,6 +93,8 @@ const Modal = ({ contentList, replyList, currentContentId, closeModal, uploadRep
                 closeBundle={closeBundle}
                 setCurrentEmojiRef={setCurrentEmojiRef}
                 saveReply={saveReply}
+                inputTxt={inputTxt}
+                setInputTxt={setInputTxt}
                 intervalRef={intervalRef}
                 stopInterval={stopInterval}
                 videoRef={videoRef}
