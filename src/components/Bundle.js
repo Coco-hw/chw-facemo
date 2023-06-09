@@ -24,15 +24,14 @@ const mapEmoji = {
   surprised: "😲",
 };
 
-const Bundle = ({ 
-  currentContentId, 
-  closeBundle, 
-  uploadReply, 
-  intervalRef, 
-  stopInterval, 
-  videoRef
+const Bundle = ({
+  currentContentId,
+  closeBundle,
+  uploadReply,
+  intervalRef,
+  stopInterval,
+  videoRef,
 }) => {
-
   // emoji를 저장할 useState, useRef 선언
   const [currentEmoji, setCurrentEmoji] = useState("");
   const setCurrentEmojiRef = useRef();
@@ -51,7 +50,8 @@ const Bundle = ({
   stopIntervalRef.current = stopInterval;
 
   // set temporary emoji variable
-  const [tempEmoji, setTempEmoji] = useState([]);
+  // const [tempEmoji, setTempEmoji] = useState([]);
+  var tempEmoji = [];
   const tempEmojiRef = useRef();
   tempEmojiRef.current = tempEmoji;
 
@@ -76,15 +76,15 @@ const Bundle = ({
 
     // face detection
     const detections = await faceapi
-    .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-    .withFaceLandmarks()
-    .withFaceExpressions();
+      .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+      .withFaceLandmarks()
+      .withFaceExpressions();
 
     // get current (bounding) video dimention
     var videoWidth = video.getBoundingClientRect().width;
     var videoHeight = video.getBoundingClientRect().height;
 
-    if(!videoWidth||!videoHeight){ 
+    if (!videoWidth || !videoHeight) {
       stopInterval();
       return;
     }
@@ -98,9 +98,11 @@ const Bundle = ({
     const resizedDetections = faceapi.resizeResults(detections, displaySize);
 
     // reset tempEmoji
-    setTempEmoji([]);
+    tempEmoji = [];
 
-    if(!resizedDetections.length){ return; }
+    if (!resizedDetections.length) {
+      return;
+    }
     // when detected:
 
     // get emoji and draw rectangle for each face
@@ -111,9 +113,9 @@ const Bundle = ({
       const expressions = detection.expressions;
       const emoji = mapEmoji[biggestOf(expressions)];
       // update tempEmoji
-      setTempEmoji([...tempEmojiRef.current, emoji]);
+      tempEmoji = [...tempEmoji, emoji];
       console.log(tempEmojiRef.current);
-      
+
       // draw rectangles
       context.strokeStyle = "white";
       context.lineWidth = 5.0;
@@ -121,17 +123,13 @@ const Bundle = ({
       context.stroke();
       // draw emoji
       context.font = "50px Arial";
-      context.fillText(
-        emoji,
-        box.x + box.width / 2 - 25,
-        box.y - 20
-      );
+      context.fillText(emoji, box.x + box.width / 2 - 25, box.y - 20);
     });
-      // set currentEmoji to emojis(in string format)
-      console.log(tempEmoji);
-      setCurrentEmojiRef.current(tempEmoji.toString());
+    // set currentEmoji to emojis(in string format)
+    console.log(tempEmoji);
+    setCurrentEmojiRef.current(tempEmoji.join(""));
   };
-  
+
   // stream and set detect interval
   const streamDetect = async () => {
     // start webcam
@@ -139,7 +137,7 @@ const Bundle = ({
       video: true,
       audio: false,
     });
-    
+
     // get all faceapi models
     console.log("Promise");
     await Promise.all([
@@ -147,14 +145,14 @@ const Bundle = ({
       faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
       faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
       faceapi.nets.faceExpressionNet.loadFromUri("/models"),
-      stopInterval()
+      stopInterval(),
     ]);
 
     // get video & canvas
     const video = videoRef.current;
     video.srcObject = stream;
     const canvas = document.getElementById("canvas");
-    
+
     // while video is playing
     video.addEventListener("play", async () => {
       setDetecting(true);
@@ -169,14 +167,14 @@ const Bundle = ({
       console.log("pause");
       stopInterval();
     });
-    
+
     video.addEventListener("ended", async () => {
       setDetecting(false);
       console.log("ended");
       stopInterval();
     });
   };
-  
+
   // activate streamDetact when first rendered & detecting staus becomes true
   useEffect(() => {
     streamDetect();
@@ -208,24 +206,25 @@ const Bundle = ({
   return (
     <div className="w-full h-full flex items-center justify-center bg-gray-200">
       <div>
-        <canvas id="canvas" className="bg-transparent absolute"/>
-        <video id="video" ref={videoRef} autoPlay/>
+        <canvas id="canvas" className="bg-transparent absolute" />
+        <video id="video" ref={videoRef} autoPlay />
       </div>
 
       <div>
-        {isStreaming
-        ? <div>
-          <button onClick={pauseVideo}>This emoji!</button>
-          <button onClick={closeBundle}>Return to emojiList</button>
+        {isStreaming ? (
+          <div>
+            <button onClick={pauseVideo}>This emoji!</button>
+            <button onClick={closeBundle}>Return to emojiList</button>
           </div>
-        : <div>
-          <button onClick={restartVideo}>Try Again</button>
-          <button onClick={savePhoto}>OK</button>
+        ) : (
+          <div>
+            <button onClick={restartVideo}>Try Again</button>
+            <button onClick={savePhoto}>OK</button>
           </div>
-        }
+        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Bundle;
