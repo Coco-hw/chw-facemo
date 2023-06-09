@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
+import EmojiAlert from "@/components/EmojiAlert";
 
 // biggest emotion을 추출할 함수 biggestOf 선언
 const biggestOf = (detectedExpressions) => {
@@ -170,7 +171,18 @@ const Bundle = ({
     streamDetect();
   }, []);
 
+  useEffect(() => {
+    if(detected){
+      setEmojiAlert(false);
+    }
+  }, [detected])
+
   const pauseVideo = () => {
+    // return none if not detected
+    if (!detected){ 
+      setEmojiAlert(true);
+      return; 
+    }
     // stop detecting
     setDetecting(false);
     // pause video
@@ -215,6 +227,9 @@ const Bundle = ({
           <button onClick={restartVideo}>Try Again</button>
           <button onClick={savePhoto}>OK</button>
         </div>
+      }
+      {emojiAlert&&
+        (<EmojiAlert/>)
       }
     </div>
   );
