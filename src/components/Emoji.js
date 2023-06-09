@@ -21,7 +21,7 @@ const Emoji = ({replyData}) => {
   const messageBoxStyle = {
     display: isHovered ? 'block' : 'none',
     position: 'absolute',
-    top: '100%', // Position the messageBox below the Emoji component
+    top: '50%', // Position the messageBox below the Emoji component
     left: '50%', // Center the messageBox horizontally
     transform: 'translateX(-50%)', // Adjust horizontal centering
     width: '200px',
@@ -46,7 +46,7 @@ const Emoji = ({replyData}) => {
       </div>
       {isHovered && (
         <div style={messageBoxStyle}>
-          <p>Here!</p>
+          <p>{replyData.replyTxt}</p>
         </div>
       )}
     </div>
