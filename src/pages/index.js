@@ -47,35 +47,37 @@ const facemoCollection = collection(db, "facemo");
 /////////////////////////////////////////////////////
 
 export default function Home() {
-  // modal과 bundle의 상태를 저장하는 변수입니다.
+  // modal의 상태를 저장하는 변수입니다.
   const [modalOpened, setModalOpened] = useState(false);
-  const [bundleOpened, setBundleOpened] = useState(false);
+
   // 선택한 콘텐츠의 currentContentId의 상태를 저장하는 변수입니다.
   const [currentContentId, setCurrentContentId] = useState(null);
   // 전체 replyList를 담는 변수입니다.
   const [replyList, setReplyList] = useState([]); // { contentId, replyId, replyEmoji, replyTxt, timestamp, justUpdated}
-  // 외부에서 접근 가능한 interval reference 저장
-  const intervalRef = useRef(null);
-  // intervalRef에 할당된 interval을 멈추는 함수
-  const stopInterval = async() => {
-    clearInterval(intervalRef.current);
+
+  // 비디오 Ref를 담는 변수입니다.
+  const videoRef = useRef(null);
+  // 웹캠을 끄는 함수입니다.
+  const stopWebcam = async() => {
+    // videoRef가 null이 아닐 경우 실행
+    if (!videoRef) {return;}
+    // get stream
+    const stream = await videoRef.current.srcObject;
+    // delete track
+    try {
+      const tracks = await stream.getTracks();
+      tracks[0].stop();
+    } catch (error) {
+      console.log("Error accessing the camera: " + error);
+    }
+    videoRef.current = null;
   }
 
-    // modal과 bundle을 열고 닫는 함수입니다.
-  const openBundle = () => {
-    setBundleOpened(true);
-  }
-  const closeBundle = async() => {
-    await stopInterval();
-    setBundleOpened(false);
-  }
-
+  // modal을 열고 닫는 함수입니다.
   const openModal = () => {
     setModalOpened(true);
-    openBundle();
   }
   const closeModal = async() => {
-    await closeBundle();
     setModalOpened(false);
     setCurrentContentId(null);
   }
@@ -88,7 +90,6 @@ export default function Home() {
 
     // Firestore에서 replyData를 조회합니다.
     const results = await getDocs(q);
-    console.log(results.docs[0].data());
     const newReply = [];
 
     //가져온 replyData를 replyList에 담습니다.
@@ -98,6 +99,7 @@ export default function Home() {
 
     setReplyList(newReply);
   }
+
   // 마운트시 firebase에서 replyList 가져오기
   useEffect(() => {
     getReply();
@@ -153,11 +155,9 @@ export default function Home() {
           replyList={replyList}
           currentContentId={currentContentId}
           closeModal={closeModal}
-          bundleOpened={bundleOpened}
-          openBundle={openBundle}
-          closeBundle={closeBundle}
           uploadReply={uploadReply}
-          intervalRef={intervalRef}
+          videoRef={videoRef}
+          stopWebcam={stopWebcam}
         />
       )}
     </div>
