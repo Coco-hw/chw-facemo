@@ -6,7 +6,7 @@ import { Button } from "@material-tailwind/react";
 
 import React, { useState, useEffect, useRef } from "react";
 import Thumbnail from "@/components/Thumbnail";
-import Modal from "@/components/Modal";
+import Modal from "@/components/modal";
 
 ///////////////////////////////////////////////////////
 // samples
@@ -148,7 +148,8 @@ export default function Home() {
 
   return (
     <div>
-      <Button>Button</Button>;{/* Render thumbnails */}
+      <Button>Button</Button>
+      {/* Render thumbnails */}
       {contentList.map((content) => (
         <Thumbnail
           key={content.contentId}
