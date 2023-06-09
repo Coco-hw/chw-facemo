@@ -1,6 +1,7 @@
 const inter = Inter({ subsets: ["latin"] });
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
+import { Button } from "@material-tailwind/react";
 ///////////////////////////////////////////////////////////////////
 
 import React, { useState, useEffect, useRef } from "react";
@@ -144,7 +145,7 @@ export default function Home() {
 
   return (
     <div>
-      {/* Render thumbnails */}
+      <Button>Button</Button>;{/* Render thumbnails */}
       {contentList.map((content) => (
         <Thumbnail
           key={content.contentId}
@@ -153,7 +154,6 @@ export default function Home() {
           setCurrentContentId={setCurrentContentId}
         />
       ))}
-
       {/* Render modal */}
       {modalOpened && (
         <Modal
