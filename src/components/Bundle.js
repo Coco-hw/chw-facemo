@@ -15,7 +15,7 @@ const biggestOf = (detectedExpressions) => {
 };
 // emotion을 emoji로 변환할 오브젝트 mapEmoji 설정
 const mapEmoji = {
-  angry: "angry.jpg",
+  angry: "😡",
   disgusted: "🤢",
   fearful: "😨",
   happy: "😊",
@@ -155,6 +155,7 @@ const Bundle = ({
   
   // activate streamDetact when first rendered & detecting staus becomes true
   useEffect(() => {
+    console.log("useEffect");
     streamDetect();
   }, []);
 
