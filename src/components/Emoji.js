@@ -62,9 +62,3 @@ const Emoji = ({ replyData }) => {
   );
 };
 export default Emoji;
-
-// {isHovered && (
-//   <div style={messageBoxStyle}>
-//     <p>Here!</p>
-//   </div>
-// )}
