@@ -60,7 +60,7 @@ export default function Home() {
   // 웹캠을 끄는 함수입니다.
   const stopWebcam = async() => {
     // videoRef가 null이 아닐 경우 실행
-    if (!videoRef) {return;}
+    if (!videoRef.current) {return;}
     // get stream
     const stream = await videoRef.current.srcObject;
     // delete track

@@ -24,19 +24,14 @@ const mapEmoji = {
   surprised: "😲",
 };
 
-const Bundle = ({ 
-  currentContentId, 
+const Bundle = ({
   closeBundle, 
-  uploadReply, 
+  setCurrentEmojiRef,
+  saveReply,
   intervalRef, 
   stopInterval, 
   videoRef
 }) => {
-
-  // emoji를 저장할 useState, useRef 선언
-  const [currentEmoji, setCurrentEmoji] = useState("");
-  const setCurrentEmojiRef = useRef();
-  setCurrentEmojiRef.current = setCurrentEmoji;
 
   // streaming status, reference
   const [isStreaming, setIsStreaming] = useState(true);
@@ -49,24 +44,6 @@ const Bundle = ({
   // stop interval reference
   const stopIntervalRef = useRef();
   stopIntervalRef.current = stopInterval;
-
-  // set temporary emoji variable
-  const [tempEmoji, setTempEmoji] = useState([]);
-  const tempEmojiRef = useRef();
-  tempEmojiRef.current = tempEmoji;
-
-  // save and upload reply (in index)
-  const saveReply = () => {
-    // { contentId, replyId, replyEmoji, replyTxt, timestamp }
-    uploadReply({
-      contentId: currentContentId,
-      replyId: Date.now(),
-      replyEmoji: currentEmoji,
-      replyTxt: "",
-      timestamp: Date.now(),
-    });
-    console.log(currentEmoji);
-  };
 
   // detecting video (used in interval)
   const detect = async (video, canvas) => {
@@ -98,7 +75,7 @@ const Bundle = ({
     const resizedDetections = faceapi.resizeResults(detections, displaySize);
 
     // reset tempEmoji
-    setTempEmoji([]);
+    var tempEmoji = []
 
     if(!resizedDetections.length){ return; }
     // when detected:
@@ -111,8 +88,7 @@ const Bundle = ({
       const expressions = detection.expressions;
       const emoji = mapEmoji[biggestOf(expressions)];
       // update tempEmoji
-      setTempEmoji([...tempEmojiRef.current, emoji]);
-      console.log(tempEmojiRef.current);
+      tempEmoji.push(emoji);
       
       // draw rectangles
       context.strokeStyle = "white";
@@ -128,7 +104,6 @@ const Bundle = ({
       );
     });
       // set currentEmoji to emojis(in string format)
-      console.log(tempEmoji);
       setCurrentEmojiRef.current(tempEmoji.toString());
   };
   
@@ -141,7 +116,6 @@ const Bundle = ({
     });
     
     // get all faceapi models
-    console.log("Promise");
     await Promise.all([
       faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
       faceapi.nets.faceLandmark68Net.loadFromUri("/models"),

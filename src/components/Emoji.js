@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Emoji = ({replyData}) => {
   const justUpdatedClassName = "h-50 text-6xl animate-bounce"
@@ -7,17 +7,23 @@ const Emoji = ({replyData}) => {
 
   const handleMouseEnter = () => {
     setIsHovered(true);
+    console.log("hovered");
   };
 
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
 
+  useEffect(() => {
+    console.log(isHovered); 
+  });
+
   const messageBoxStyle = {
     display: isHovered ? 'block' : 'none',
     position: 'absolute',
-    top: '-60px',
-    left: '80px',
+    top: '100%', // Position the messageBox below the Emoji component
+    left: '50%', // Center the messageBox horizontally
+    transform: 'translateX(-50%)', // Adjust horizontal centering
     width: '200px',
     padding: '10px',
     background: '#FFFFFF',
@@ -28,12 +34,13 @@ const Emoji = ({replyData}) => {
   };
 
   return(
-    <div>
+    <div
+    onMouseEnter={handleMouseEnter}
+    onMouseLeave={handleMouseLeave}
+    >
       <div 
       className={replyData.justUpdated?justUpdatedClassName:notUpdatedClassName}
-      // key={replyData.replyId}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      key={replyData.replyId}
       >
         {replyData.replyEmoji}
       </div>

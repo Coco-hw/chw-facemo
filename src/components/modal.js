@@ -9,6 +9,24 @@ const Modal = ({ contentList, replyList, currentContentId, closeModal, uploadRep
   // find current replyList from replyList which matches currentContentId // replyList = [ {contentId, replyId, replyEmoji, replyTxt, timestamp}, ... ]
   const [currentReplyList, setCurrentReplyList] = useState([]);
 
+  // emoji를 저장할 useState, useRef 선언
+  const [currentEmoji, setCurrentEmoji] = useState("");
+  const setCurrentEmojiRef = useRef();
+  setCurrentEmojiRef.current = setCurrentEmoji;
+
+  // save and upload reply (in index)
+  const saveReply = () => {
+    // { contentId, replyId, replyEmoji, replyTxt, timestamp }
+    uploadReply({
+      contentId: currentContentId,
+      replyId: replyList.length,
+      replyEmoji: currentEmoji,
+      replyTxt: "",
+      timestamp: Date.now(),
+    });
+    console.log(currentEmoji);
+  };
+
   // 외부에서 접근 가능한 interval reference 저장
   const intervalRef = useRef(null);
   // intervalRef에 할당된 interval을 멈추는 함수
@@ -68,13 +86,12 @@ const Modal = ({ contentList, replyList, currentContentId, closeModal, uploadRep
             <div>
               <div className="h-full flex justify-center items-center">
                 <Bundle
-                currentContentId={currentContentId}
                 closeBundle={closeBundle}
-                uploadReply={uploadReply}
+                setCurrentEmojiRef={setCurrentEmojiRef}
+                saveReply={saveReply}
                 intervalRef={intervalRef}
                 stopInterval={stopInterval}
                 videoRef={videoRef}
-                stopWebcam={stopWebcam}
                 />
               </div>
             </div>
