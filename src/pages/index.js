@@ -7,6 +7,8 @@ import { Button } from "@material-tailwind/react";
 import React, { useState, useEffect, useRef } from "react";
 import Thumbnail from "@/components/Thumbnail";
 import Modal from "@/components/modal";
+import Intro from "@/components/Intro";
+// import P5Sketch from "@/components/P5Sketch";
 
 ///////////////////////////////////////////////////////
 // samples
@@ -84,7 +86,7 @@ export default function Home() {
     setModalOpened(false);
     setCurrentContentId(null);
     turnoffReply();
-  }
+  };
 
   // replyData 불러오기
   // replyData = { contentId, replyId, replyEmoji, replyTxt, timestamp}
@@ -112,12 +114,15 @@ export default function Home() {
 
   // 기존의 updatedStatus를 false로 변경합니다.
   const turnoffReply = () => {
-    const turnoffReplyList = replyList.map((reply)=>{
-      if (reply.justUpdated){ return {...reply, justUpdated:false}; }
-      else { return reply; }
+    const turnoffReplyList = replyList.map((reply) => {
+      if (reply.justUpdated) {
+        return { ...reply, justUpdated: false };
+      } else {
+        return reply;
+      }
     });
     setReplyList(turnoffReplyList);
-  }
+  };
 
   // replyData 업로드하기
   const uploadReply = async (replyData) => {
@@ -134,42 +139,46 @@ export default function Home() {
     turnoffReply();
 
     // ReplyList를 업데이트합니다.
-    setReplyList(
-      [...replyList, {
-      contentId: replyData.contentId,
-      replyId: replyData.replyId,
-      replyEmoji: replyData.replyEmoji,
-      replyTxt: replyData.replyTxt,
-      timestamp: replyData.timestamp,
-      justUpdated: true
-      }]
-    );
+    setReplyList([
+      ...replyList,
+      {
+        contentId: replyData.contentId,
+        replyId: replyData.replyId,
+        replyEmoji: replyData.replyEmoji,
+        replyTxt: replyData.replyTxt,
+        timestamp: replyData.timestamp,
+        justUpdated: true,
+      },
+    ]);
   };
 
   return (
-    <div>
-      <Button>Button</Button>
-      {/* Render thumbnails */}
-      {contentList.map((content) => (
-        <Thumbnail
-          key={content.contentId}
-          content={content}
-          openModal={openModal}
-          setCurrentContentId={setCurrentContentId}
-        />
-      ))}
-      {/* Render modal */}
-      {modalOpened && (
-        <Modal
-          contentList={contentList}
-          replyList={replyList}
-          currentContentId={currentContentId}
-          closeModal={closeModal}
-          uploadReply={uploadReply}
-          videoRef={videoRef}
-          stopWebcam={stopWebcam}
-        />
-      )}
+    <div className="bg-white">
+      {/* <P5Sketch /> */}
+      <Intro />
+      <div>
+        {/* Render thumbnails */}
+        {contentList.map((content) => (
+          <Thumbnail
+            key={content.contentId}
+            content={content}
+            openModal={openModal}
+            setCurrentContentId={setCurrentContentId}
+          />
+        ))}
+        {/* Render modal */}
+        {modalOpened && (
+          <Modal
+            contentList={contentList}
+            replyList={replyList}
+            currentContentId={currentContentId}
+            closeModal={closeModal}
+            uploadReply={uploadReply}
+            videoRef={videoRef}
+            stopWebcam={stopWebcam}
+          />
+        )}
+      </div>
     </div>
   );
 }
