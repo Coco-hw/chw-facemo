@@ -131,11 +131,14 @@ export default function Home() {
     });
 
     // 기존의 updatedStatus를 false로 변경합니다.
-    turnoffReply();
+    const turnoffReplyList = replyList.map((reply)=>{
+      if (reply.justUpdated){ return {...reply, justUpdated:false}; }
+      else { return reply; }
+    });
 
     // ReplyList를 업데이트합니다.
     setReplyList(
-      [...replyList, {
+      [...turnoffReplyList, {
       contentId: replyData.contentId,
       replyId: replyData.replyId,
       replyEmoji: replyData.replyEmoji,
