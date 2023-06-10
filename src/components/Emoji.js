@@ -15,42 +15,23 @@ const mapEmoji = {
 const Emoji = ({ replyData }) => {
   const justUpdatedClassName = "h-50 text-6xl animate-bounce";
   const notUpdatedClassName = "h-50 text-6xl";
-  const [isHovered, setIsHovered] = useState(false);
   const txtEmoji = replyData.replyEmoji.map(emoji => mapEmoji[emoji]).join("");
 
-  useEffect(() => {
-    console.log(txtEmoji);
-    console.log(replyData.replyEmoji);
-  }, [])
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
-  useEffect(() => {
-    console.log(isHovered);
-  });
-
   return (
-    <div 
-    className={ replyData.justUpdated ? justUpdatedClassName : notUpdatedClassName}
-    onMouseEnter={handleMouseEnter} 
-    onMouseLeave={handleMouseLeave}
+    <Tooltip
+      content={replyData.replyTxt}
+      animate={{
+        mount: { scale: 1, y: 0 },
+        unmount: { scale: 0, y: 25 },
+      }}
     >
-      <Tooltip
-        content={replyData.replyTxt}
-        animate={{
-          mount: { scale: 1, y: 0 },
-          unmount: { scale: 0, y: 25 },
-        }}
+      <div
+        className={ replyData.justUpdated ? justUpdatedClassName : notUpdatedClassName }
+        key={replyData.replyId}
       >
-        <div key={replyData.replyId}>{txtEmoji}</div>
-      </Tooltip>
-    </div>
+        {txtEmoji}
+      </div>
+    </Tooltip>
   );
 };
 export default Emoji;

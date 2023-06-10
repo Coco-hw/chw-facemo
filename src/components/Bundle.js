@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
+import TextBox from "@/components/TextBox";
 import EmojiAlert from "@/components/EmojiAlert";
 import { Button } from "@material-tailwind/react";
 
@@ -25,13 +26,27 @@ const mapEmoji = {
   sad: "😥",
   surprised: "😲",
 };
+// emotion을 text로 변환할 오브젝트 mapEmoji 설정
+const mapTxt = {
+  angry: "으으 너무 화나",
+  disgusted: "우웩!",
+  fearful: "으악!",
+  happy: "난 행복해~!",
+  neutral: "음...",
+  sad: "슬퍼요ㅠㅠ",
+  surprised: "화들짝!",
+};
+
 
 const Bundle = ({
   closeBundle,
   setCurrentEmojiRef,
+  currentEmoji,
   saveReply,
   inputTxt,
   setInputTxt,
+  sampleTxt,
+  setSampleTxtRef,
   intervalRef,
   stopInterval,
   videoRef,
@@ -91,6 +106,7 @@ const Bundle = ({
 
     // reset tempEmoji
     var tempEmoji = [];
+    var tempTxt = [];
 
     // if not detected:
     if (!resizedDetections.length){
@@ -108,6 +124,7 @@ const Bundle = ({
       const expression = biggestOf(detection.expressions);
       // update tempEmoji
       tempEmoji.push(expression);
+      tempTxt.push(mapTxt[expression]);
 
       // draw rectangles
       context.strokeStyle = "white";
@@ -120,8 +137,8 @@ const Bundle = ({
       context.fillText(emoji, box.x + box.width / 2 - 25, box.y - 20);
     });
     // set currentEmoji to emojis(in string format)
-    console.log(tempEmoji);
     setCurrentEmojiRef.current(tempEmoji);
+    setSampleTxtRef.current(tempTxt.join(" "));
   };
 
   // stream and set detect interval
@@ -171,7 +188,6 @@ const Bundle = ({
 
   // activate streamDetact when first rendered & detecting staus becomes true
   useEffect(() => {
-    console.log("useEffect");
     streamDetect();
   }, []);
 
@@ -203,9 +219,9 @@ const Bundle = ({
     setDetecting(true);
   };
 
-  const savePhoto = () => {
+  const savePhoto = async() => {
     // save reply and close bundle
-    saveReply();
+    await saveReply();
     closeBundle();
   };
 
@@ -220,27 +236,23 @@ const Bundle = ({
           <Button className="basis-1/2" color="white" onClick={pauseVideo}>
             This emoji!
           </Button>
-          <Button className="basis-1/2" color="white" onClick={closeBundle}>
-            Return to emojiList
-          </Button>
         </div>
       ) : (
         <div className="w-full flex flex-row justify-around">
           {/* 댓글을 입력받는 텍스트 필드입니다. */}
-          <input
-            type="text"
-            className="shadow-lg ml-2 p-1 grow mb-4 border border-gray-300 rounded"
-            value={inputTxt}
-            onChange={(e) => setInputTxt(e.target.value)}
+          <TextBox 
+          currentEmoji={currentEmoji} 
+          inputTxt={inputTxt} 
+          setInputTxt={setInputTxt}
+          sampleTxt={sampleTxt}
+          restartVideo={restartVideo}
+          savePhoto={savePhoto}
           />
-          <Button className="basis-1/3" color="white" onClick={restartVideo}>
-            Try Again
-          </Button>
-          <Button className="basis-1/3" color="white" onClick={savePhoto}>
-            OK
-          </Button>
         </div>
       )}
+      <Button className="basis-1/2" color="white" onClick={closeBundle}>
+        Return to emojiList
+      </Button>
       <EmojiAlert open={alert}/>
     </div>
   );
