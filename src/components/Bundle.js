@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 import EmojiAlert from "@/components/EmojiAlert";
+import { Button } from "@material-tailwind/react";
 
 // biggest emotion을 추출할 함수 biggestOf 선언
 const biggestOf = (detectedExpressions) => {
@@ -31,9 +32,9 @@ const Bundle = ({
   saveReply,
   inputTxt,
   setInputTxt,
-  intervalRef, 
-  stopInterval, 
-  videoRef
+  intervalRef,
+  stopInterval,
+  videoRef,
 }) => {
   // streaming status, reference
   const [isStreaming, setIsStreaming] = useState(true);
@@ -59,7 +60,9 @@ const Bundle = ({
 
   // detecting video (used in interval)
   const detect = async (video, canvas) => {
-    if(!detectingRef.current){return;}
+    if (!detectingRef.current) {
+      return;
+    }
     // set context of canvas
     const context = canvas.getContext("2d");
 
@@ -212,26 +215,35 @@ const Bundle = ({
         <canvas id="canvas" className="bg-transparent absolute" />
         <video id="video" ref={videoRef} autoPlay />
       </div>
-      {isStreaming
-      ? <div>
-          <button onClick={pauseVideo}>This emoji!</button>
-          <button onClick={closeBundle}>Return to emojiList</button>
+      {isStreaming ? (
+        <div className="w-full flex flex-row justify-around">
+          <Button className="basis-1/2" color="white" onClick={pauseVideo}>
+            This emoji!
+          </Button>
+          <Button className="basis-1/2" color="white" onClick={closeBundle}>
+            Return to emojiList
+          </Button>
         </div>
-      : <div>
+      ) : (
+        <div className="w-full flex flex-row justify-around">
           {/* 댓글을 입력받는 텍스트 필드입니다. */}
           <input
-          type="text"
-          className="shadow-lg ml-2 p-1 grow mb-4 border border-gray-300 rounded"
-          value={inputTxt}
-          onChange={(e) => setInputTxt(e.target.value)}
+            type="text"
+            className="shadow-lg ml-2 p-1 grow mb-4 border border-gray-300 rounded"
+            value={inputTxt}
+            onChange={(e) => setInputTxt(e.target.value)}
           />
-          <button onClick={restartVideo}>Try Again</button>
-          <button onClick={savePhoto}>OK</button>
+          <Button className="basis-1/3" color="white" onClick={restartVideo}>
+            Try Again
+          </Button>
+          <Button className="basis-1/3" color="white" onClick={savePhoto}>
+            OK
+          </Button>
         </div>
-      }
-      {emojiAlert&&
+      )}
+        {emojiAlert&&
         (<EmojiAlert/>)
-      }
+        }
     </div>
   );
 };
