@@ -143,6 +143,7 @@ const Bundle = ({
 
     // get video & canvas
     const video = videoRef.current;
+    if(!video){return;}
     video.srcObject = stream;
     const canvas = document.getElementById("canvas");
 

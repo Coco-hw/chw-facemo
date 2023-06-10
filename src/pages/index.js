@@ -1,6 +1,6 @@
 const inter = Inter({ subsets: ["latin"] });
 import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
+// import styles from "@/styles/Home.module.css";
 import { Button } from "@material-tailwind/react";
 ///////////////////////////////////////////////////////////////////
 
@@ -176,8 +176,8 @@ export default function Home() {
 
 // 메인페이지 css 메인페이지 및 계정 선택 페이지 index파일
 //import { useState } from "react";
-import { useRouter } from "next/router";
-import { Button, Avatar, Typography } from "@material-tailwind/react";
+// import { useRouter } from "next/router";
+// import { Button, Avatar, Typography } from "@material-tailwind/react";
 //export default function HomePage() {
 // const router = useRouter();
 // const [showAvatars, setShowAvatars] = useState(false);
