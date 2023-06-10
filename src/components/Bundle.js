@@ -49,7 +49,7 @@ const Bundle = ({
   setDetectedRef.current = setDetected;
 
   // emoji alert status
-  const [emojiAlert, setEmojiAlert] = useState(false);
+  const [alert, setAlert] = useState(false);
 
   // text alert status
   const [textAlert, setTextAlert] = useState(false);
@@ -143,9 +143,7 @@ const Bundle = ({
 
     // get video & canvas
     const video = videoRef.current;
-    if (!video) {
-      return;
-    }
+    if(!video){return;}
     video.srcObject = stream;
     const canvas = document.getElementById("canvas");
 
@@ -178,16 +176,16 @@ const Bundle = ({
   }, []);
 
   useEffect(() => {
-    if (detected) {
-      setEmojiAlert(false);
+    if(detected){
+      setAlert(false);
     }
   }, [detected]);
 
   const pauseVideo = () => {
     // return none if not detected
-    if (!detected) {
-      setEmojiAlert(true);
-      return;
+    if (!detected){ 
+      setAlert(true);
+      return; 
     }
     // stop detecting
     setDetecting(false);
@@ -245,7 +243,7 @@ const Bundle = ({
           </div>
         </div>
       )}
-      {emojiAlert && <EmojiAlert />}
+      <EmojiAlert open={alert}/>
     </div>
   );
 };

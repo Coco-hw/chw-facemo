@@ -36,25 +36,20 @@ const Emoji = ({ replyData }) => {
   });
 
   return (
-    <div>
-      <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-        <Tooltip
-          content={replyData.replyTxt}
-          animate={{
-            mount: { scale: 1, y: 0 },
-            unmount: { scale: 0, y: 25 },
-          }}
-        >
-          <div
-            className={
-              replyData.justUpdated ? justUpdatedClassName : notUpdatedClassName
-            }
-            key={replyData.replyId}
-          >
-            {txtEmoji}
-          </div>
-        </Tooltip>
-      </div>
+    <div 
+    className={ replyData.justUpdated ? justUpdatedClassName : notUpdatedClassName}
+    onMouseEnter={handleMouseEnter} 
+    onMouseLeave={handleMouseLeave}
+    >
+      <Tooltip
+        content={replyData.replyTxt}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0, y: 25 },
+        }}
+      >
+        <div key={replyData.replyId}>{txtEmoji}</div>
+      </Tooltip>
     </div>
   );
 };
