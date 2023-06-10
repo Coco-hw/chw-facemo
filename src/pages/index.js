@@ -1,7 +1,25 @@
 const inter = Inter({ subsets: ["latin"] });
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-import { Button, Avatar, Typography } from "@material-tailwind/react";
+import {
+  Button,
+  Avatar,
+  Typography,
+  Card,
+  List,
+  ListItem,
+  ListItemPrefix,
+  ListItemSuffix,
+  Chip,
+} from "@material-tailwind/react";
+import {
+  PresentationChartBarIcon,
+  ShoppingBagIcon,
+  UserCircleIcon,
+  Cog6ToothIcon,
+  InboxIcon,
+  PowerIcon,
+} from "@heroicons/react/24/solid";
 ///////////////////////////////////////////////////////////////////
 
 import React, { useState, useEffect, useRef } from "react";
@@ -33,6 +51,62 @@ const contentList = [
     contentSrc: "assets/image3.jpg",
     contentTxt: "",
   },
+  {
+    accountId: 2,
+    contentId: 1,
+    contentSrc: "assets/magnolia.jpg",
+    contentTxt: "폴 토마스 앤더슨, <매그놀리아> (1999)",
+  },
+  {
+    accountId: 2,
+    contentId: 2,
+    contentSrc: "assets/paprika.jpg",
+    contentTxt: "콘 사토시, <파프리카>(2006)",
+  },
+
+  {
+    accountId: 2,
+    contentId: 3,
+    contentSrc: "assets/mauvais_sang.jpg",
+    contentTxt: "레오 까락스, <나쁜 피> (1986)",
+  },
+  {
+    accountId: 2,
+    contentId: 4,
+    contentSrc: "assets/lily_chouchou.jpg",
+    contentTxt: "이와이 슌지, <릴리 슈슈의 모든 것> (2001)",
+  },
+  {
+    accountId: 2,
+    contentId: 5,
+    contentSrc: "assets/space_odyssey_2001.jpg",
+    contentTxt: "스탠리 큐브릭, <2001 스페이스 오디세이> (1968)",
+  },
+  {
+    accountId: 2,
+    contentId: 6,
+    contentSrc: "assets/the_lobster.jpg",
+    contentTxt: "요르고스 란티모스, <더 랍스터> (2015)",
+  },
+
+  {
+    accountId: 2,
+    contentId: 7,
+    contentSrc: "assets/playtime.jpg",
+    contentTxt: "자크 타티, <플레이타임> (1967)",
+  },
+  {
+    accountId: 2,
+    contentId: 8,
+    contentSrc: "assets/nope.jpeg",
+    contentTxt: "조던 필, <놉> (2022)",
+  },
+  {
+    accountId: 2,
+    contentId: 9,
+    contentSrc: "assets/man_with_camera.jpg",
+    contentTxt: "지가 베르토프, <카메라를 든 사나이> (1929)",
+  },
 ];
 
 ///////////////////////////////////////////////////
@@ -40,15 +114,15 @@ const contentList = [
 const accountList = [
   {
     accountId: 1, // account의 순서를 지정
-    accountName: "계정 1", // account의 이름 지정
+    accountName: "윤여원", // account의 이름 지정
     accountSrc: "assets/image1.jpg", // account의 프로필 사진 지정
     accountTxt: "소개 1", // account의 한 줄 소개 지정
   },
   {
     accountId: 2,
-    accountName: "계정 2",
-    accountSrc: "assets/image2.jpg",
-    accountTxt: "영화를 좋아해요.",
+    accountName: "영덕대게",
+    accountSrc: "assets/youngduck_crab.jpg",
+    accountTxt: "영화 덕후 대박 계정",
   },
   {
     accountId: 3,
@@ -166,11 +240,17 @@ export default function Home() {
     });
 
     // 기존의 updatedStatus를 false로 변경합니다.
-    turnoffReply();
+    const turnoffReplyList = replyList.map((reply) => {
+      if (reply.justUpdated) {
+        return { ...reply, justUpdated: false };
+      } else {
+        return reply;
+      }
+    });
 
     // ReplyList를 업데이트합니다.
     setReplyList([
-      ...replyList,
+      ...turnoffReplyList,
       {
         contentId: replyData.contentId,
         replyId: replyData.replyId,
@@ -183,40 +263,80 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-white">
+    <div className="bg-white h-screen">
       {currentAccountId < 0 ? (
-        <HomePage
-          accountList={accountList}
-          handleAccountClick={setCurrentAccountId}
-        />
+        <>
+          {/* <Intro /> */}
+          <HomePage
+            accountList={accountList}
+            handleAccountClick={setCurrentAccountId}
+          />
+        </>
       ) : (
-        <div>
-          {/* Render thumbnails */}
-          {currentAccountId > 0 &&
-            contentList
-              .filter((content) => content.accountId === currentAccountId)
-              .map((content) => (
-                <Thumbnail
-                  key={content.contentId}
-                  content={content}
-                  openModal={openModal}
-                  setCurrentContentId={setCurrentContentId}
-                />
+        <div className="flex flex-col justify-center items-center">
+          {/* Render accountSrc, accountName, accountTxt */}
+          <div className="">
+            {accountList
+              .filter((account) => account.accountId === currentAccountId)
+              .map((account) => (
+                <div className="flex flex-row gap-5 mt-10 mb-10">
+                  <div>
+                    <Avatar
+                      src={account.accountSrc}
+                      alt={account.accountId}
+                      size="xxl"
+                      className="border-black border-1"
+                    />
+                  </div>
+                  <div className="flex flex-col justify-center gap-1">
+                    <Typography variant="h6" color="black" className="text-3xl">
+                      {account.accountName}
+                    </Typography>
+                    <Typography
+                      variant="large"
+                      color="gray"
+                      className="font-normal"
+                    >
+                      {account.accountTxt}
+                    </Typography>
+                  </div>
+                </div>
               ))}
+          </div>
+          {/* Render thumbnails */}
+          <div className="grid grid-cols-3 gap-4">
+            {currentAccountId > 0 &&
+              contentList
+                .filter((content) => content.accountId === currentAccountId)
+                .map((content) => (
+                  <Thumbnail
+                    key={content.contentId}
+                    content={content}
+                    openModal={openModal}
+                    setCurrentContentId={setCurrentContentId}
+                  />
+                ))}
+          </div>
         </div>
       )}
 
       {/* Render modal */}
       {modalOpened && (
-        <Modal
-          contentList={contentList}
-          replyList={replyList}
-          currentContentId={currentContentId}
-          closeModal={closeModal}
-          uploadReply={uploadReply}
-          videoRef={videoRef}
-          stopWebcam={stopWebcam}
-        />
+        <>
+          {/* 모달 창밖 레이어. 주변을 어둡게 하고 클릭 시 모달이 꺼지게 한다. -> 실행 안 됨. */}
+          <div onClick={closeModal}></div>
+          {/* 모달 창 */}
+          <Modal
+            contentList={contentList}
+            replyList={replyList}
+            currentAccountId={currentAccountId}
+            currentContentId={currentContentId}
+            closeModal={closeModal}
+            uploadReply={uploadReply}
+            videoRef={videoRef}
+            stopWebcam={stopWebcam}
+          />
+        </>
       )}
     </div>
   );

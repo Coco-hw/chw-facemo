@@ -16,7 +16,7 @@ const HomePage = ({ accountList, handleAccountClick }) => {
       {showAvatars ? (
         <div className="flex flex-col justify-center items-center gap-6 h-screen space-y-10">
           {accountList.map((account) => (
-            <div className="flex items-center gap-8">
+            <div className="flex items-center justify-center gap-6 w-1/2">
               {/* 프로필 사진 */}
               <Avatar
                 src={account.accountSrc}
@@ -26,8 +26,8 @@ const HomePage = ({ accountList, handleAccountClick }) => {
                 className="border-black border-2"
               />
               {/* 계정명 및 한 줄 소개 */}
-              <div>
-                <Typography variant="h6" color="black">
+              <div className="basis-1/2">
+                <Typography variant="h6" color="black" className="text-lg">
                   {account.accountName}
                 </Typography>
                 <Typography
