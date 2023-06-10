@@ -173,3 +173,61 @@ export default function Home() {
     </div>
   );
 }
+
+// 메인페이지 css 메인페이지 및 계정 선택 페이지 index파일
+//import { useState } from "react";
+import { useRouter } from "next/router";
+import { Button, Avatar, Typography } from "@material-tailwind/react";
+//export default function HomePage() {
+// const router = useRouter();
+// const [showAvatars, setShowAvatars] = useState(false);
+
+//const handleStartClick = () => {
+//  setShowAvatars(true);
+ // };
+
+ // if (showAvatars) {
+ //   return (
+ //     <div className="flex flex-col gap-6 items-center justify-center h-screen space-y-10">
+ //       <div className="flex items-center gap-8">
+ //         <Avatar src="/assets/image4.jpg" alt="avatar" size="xl" variant="rounded" className="border-black border-2" />
+ //         <div>
+ //           <Typography variant="h6">계정 1</Typography>
+ //           <Typography variant="large" color="gray" className="font-normal">노예 1</Typography>
+ //         </div>
+ //         <Button color="blue" size="regular">Pick Me!</Button>
+ //       </div>
+ //       <div className="flex items-center gap-8">
+ //         <Avatar
+ //           src="/assets/image4.jpg"
+ //           alt="avatar"
+ //           variant="rounded"
+ //           size="xl"
+ //           className="border-black border-2"
+ //         />
+ //         <div>
+ //           <Typography variant="h6">계정 2</Typography>
+ //           <Typography variant="large" color="gray" className="font-normal">노예 2</Typography>
+ //         </div>
+ //         <Button color="blue" size="regular">Why not?</Button>
+ //       </div>
+ //       <div className="flex items-center gap-8">
+ //         <Avatar src="/assets/image4.jpg" alt="avatar" variant="rounded" size="xl" className="border-black border-2" />
+ //         <div>
+ //           <Typography variant="h6">계정 3</Typography>
+ //           <Typography variant="large" color="gray" className="font-normal">노예 3</Typography>
+ //         </div>
+ //         <Button color="blue" size="regular">Please Choose me...</Button>
+ //       </div>
+ //     </div>
+ //   );
+ // }
+
+//  return (
+ //   <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+//  <div style={{ textAlign: "center", marginBottom: "20px", fontSize: "200px", fontWeight: "bold", letterSpacing: "-10px" }}>FacEMO</div>
+//    <Button size="lg" onClick={handleStartClick}>시작하기</Button>
+//  </div>
+//);
+//}
+
