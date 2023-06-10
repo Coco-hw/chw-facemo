@@ -49,7 +49,7 @@ const Bundle = ({
   setDetectedRef.current = setDetected;
 
   // emoji alert status
-  const [emojiAlert, setEmojiAlert] = useState(false);
+  const [alert, setAlert] = useState(false);
 
   // text alert status
   const [textAlert, setTextAlert] = useState(false);
@@ -177,14 +177,14 @@ const Bundle = ({
 
   useEffect(() => {
     if(detected){
-      setEmojiAlert(false);
+      setAlert(false);
     }
   }, [detected])
 
   const pauseVideo = () => {
     // return none if not detected
     if (!detected){ 
-      setEmojiAlert(true);
+      setAlert(true);
       return; 
     }
     // stop detecting
@@ -241,9 +241,7 @@ const Bundle = ({
           </Button>
         </div>
       )}
-        {emojiAlert&&
-        (<EmojiAlert/>)
-        }
+      <EmojiAlert open={alert}/>
     </div>
   );
 };
