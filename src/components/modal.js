@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import Bundle from "@/components/Bundle";
 import Emoji from "@/components/Emoji";
-import { Button } from "@material-tailwind/react";
+import { Button, Typography } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 
 // return hovering canvas with content image, camera, replyList
 const Modal = ({
   contentList,
   replyList,
+  currentAccountId,
   currentContentId,
   closeModal,
   uploadReply,
@@ -16,7 +17,8 @@ const Modal = ({
 }) => {
   // find current content from contentList which matches currentContentId // contentList = [{contentId, contentSrc}, ... ]
   const currentContent = contentList.find(
-    (item) => item.contentId === currentContentId
+    (item) =>
+      item.accountId === currentAccountId && item.contentId === currentContentId
   );
   // find current replyList from replyList which matches currentContentId // replyList = [ {contentId, replyId, replyEmoji, replyTxt, timestamp}, ... ]
   const [currentReplyList, setCurrentReplyList] = useState([]);
@@ -79,11 +81,13 @@ const Modal = ({
 
   // Render
   return (
-    <div className="fixed inset-0 flex justify-center items-center z-10 pt-8">
-      <div className="relative bg-transparent w-4/5">
+    <div className="fixed inset-0 flex justify-center items-center pt-8">
+      {/* 화면 밖 누르면 모달 꺼지게 구현하고 싶었으나 실패. 부모요소에 onClick 두면 모달 안쪽 눌러도 꺼짐. */}
+      <div className="z-10 h-screen" onClick={closeBundleModal}></div>
+      <div className="relative bg-transparent w-4/5 z-20">
         {/* close button */}
         <button
-          className="absolute top-2 right-2 text-gray-500"
+          className="absolute top-2 right-2 text-gray-500 z-20"
           onClick={closeBundleModal}
         >
           <XMarkIcon strokeWidth={2} className="h-10 w-10"></XMarkIcon>
@@ -92,12 +96,21 @@ const Modal = ({
         {/* image and {Bundle or replyList} box */}
         <div className="flex flex-row">
           {/* contentSrc(image) */}
-          <div className="">
-            <img
-              src={currentContent.contentSrc}
-              alt={`Content ${currentContentId}`}
-              style={{ width: "600px", height: "600px", objectFit: "cover" }}
-            />
+          <div className="relative">
+            <div>
+              <img
+                src={currentContent.contentSrc}
+                alt={`Content ${currentContentId}`}
+                style={{ width: "600px", height: "600px", objectFit: "cover" }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-0 hover:opacity-100 transition-opacity duration-500">
+                <div className="absolute bottom-0 left-0 p-4 text-white">
+                  <Typography variant="paragraph" color="white">
+                    {currentContent.contentTxt}
+                  </Typography>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Bundle or emojiList */}
@@ -105,14 +118,14 @@ const Modal = ({
             <div className="basis-1/2">
               <div className="h-full flex justify-center items-center">
                 <Bundle
-                closeBundle={closeBundle}
-                setCurrentEmojiRef={setCurrentEmojiRef}
-                saveReply={saveReply}
-                inputTxt={inputTxt}
-                setInputTxt={setInputTxt}
-                intervalRef={intervalRef}
-                stopInterval={stopInterval}
-                videoRef={videoRef}
+                  closeBundle={closeBundle}
+                  setCurrentEmojiRef={setCurrentEmojiRef}
+                  saveReply={saveReply}
+                  inputTxt={inputTxt}
+                  setInputTxt={setInputTxt}
+                  intervalRef={intervalRef}
+                  stopInterval={stopInterval}
+                  videoRef={videoRef}
                 />
               </div>
             </div>

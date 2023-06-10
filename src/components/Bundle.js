@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 import EmojiAlert from "@/components/EmojiAlert";
-import { Button } from "@material-tailwind/react";
+import { Button, Input } from "@material-tailwind/react";
 
 // biggest emotion을 추출할 함수 biggestOf 선언
 const biggestOf = (detectedExpressions) => {
@@ -93,7 +93,7 @@ const Bundle = ({
     var tempEmoji = [];
 
     // if not detected:
-    if (!resizedDetections.length){
+    if (!resizedDetections.length) {
       setDetectedRef.current(false);
       return;
     }
@@ -179,7 +179,7 @@ const Bundle = ({
     if(detected){
       setAlert(false);
     }
-  }, [detected])
+  }, [detected]);
 
   const pauseVideo = () => {
     // return none if not detected
@@ -216,7 +216,7 @@ const Bundle = ({
         <video id="video" ref={videoRef} autoPlay />
       </div>
       {isStreaming ? (
-        <div className="w-full flex flex-row justify-around">
+        <div className="w-full flex flex-row justify-around p-3 gap-2">
           <Button className="basis-1/2" color="white" onClick={pauseVideo}>
             This emoji!
           </Button>
@@ -225,20 +225,22 @@ const Bundle = ({
           </Button>
         </div>
       ) : (
-        <div className="w-full flex flex-row justify-around">
+        <div className="w-full flex flex-col p-3">
           {/* 댓글을 입력받는 텍스트 필드입니다. */}
-          <input
-            type="text"
-            className="shadow-lg ml-2 p-1 grow mb-4 border border-gray-300 rounded"
+          <Input
+            label="무엇을 느꼈나요? (최대 20자)"
             value={inputTxt}
+            maxLength={20}
             onChange={(e) => setInputTxt(e.target.value)}
           />
-          <Button className="basis-1/3" color="white" onClick={restartVideo}>
-            Try Again
-          </Button>
-          <Button className="basis-1/3" color="white" onClick={savePhoto}>
-            OK
-          </Button>
+          <div className="w-full flex flex-row justify-around mt-3 gap-2">
+            <Button className="basis-1/2" color="white" onClick={restartVideo}>
+              Try Again
+            </Button>
+            <Button className="basis-1/2" color="white" onClick={savePhoto}>
+              OK
+            </Button>
+          </div>
         </div>
       )}
       <EmojiAlert open={alert}/>
