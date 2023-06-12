@@ -30,6 +30,9 @@ const HomePage = ({
           </button>
 
           <div className="flex flex-col justify-center items-center gap-6 h-screen space-y-10">
+            <div className="text-6xl font-bold tracking-tight text-black">
+            아래 마음에 드는 계정을 선택해주세요
+          </div>
             {accountList.map((account) => (
               <div className="flex items-center justify-center gap-6 w-1/2">
                 {/* 프로필 사진 */}
