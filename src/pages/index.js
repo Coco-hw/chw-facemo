@@ -359,9 +359,7 @@ export default function Home() {
 
       {/* Render modal */}
       {modalOpened && (
-        <>
-          {/* 모달 창밖 레이어. 주변을 어둡게 하고 클릭 시 모달이 꺼지게 한다. -> 실행 안 됨. */}
-          <div onClick={closeModal}></div>
+        <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center">
           {/* 모달 창 */}
           <Modal
             contentList={contentList}
@@ -373,7 +371,7 @@ export default function Home() {
             videoRef={videoRef}
             stopWebcam={stopWebcam}
           />
-        </>
+        </div>
       )}
     </div>
   );

@@ -18,20 +18,21 @@ const Emoji = ({ replyData }) => {
   const txtEmoji = replyData.replyEmoji.map(emoji => mapEmoji[emoji]).join("");
 
   return (
-    <Tooltip
-      content={replyData.replyTxt}
-      animate={{
-        mount: { scale: 1, y: 0 },
-        unmount: { scale: 0, y: 25 },
-      }}
-    >
-      <div
-        className={ replyData.justUpdated ? justUpdatedClassName : notUpdatedClassName }
-        key={replyData.replyId}
+    <div className={ replyData.justUpdated ? justUpdatedClassName : notUpdatedClassName }>
+      <Tooltip
+        content={replyData.replyTxt}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0, y: 25 },
+        }}
       >
-        {txtEmoji}
-      </div>
-    </Tooltip>
+        <div
+          key={replyData.replyId}
+        >
+          {txtEmoji}
+        </div>
+      </Tooltip>
+    </div>
   );
 };
 export default Emoji;
