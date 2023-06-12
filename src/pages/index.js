@@ -33,22 +33,59 @@ import { useRouter } from "next/router";
 ///////////////////////////////////////////////////////
 // samples
 const contentList = [
+  // \
   {
-    accountId: 1,
+    accountId: 3, 
     contentId: 1,
-    contentSrc: "assets/image1.jpg",
+    contentSrc: "assets/a3image1.jpg",
     contentTxt: "",
   },
   {
-    accountId: 1,
+    accountId: 3, 
     contentId: 2,
-    contentSrc: "assets/image2.jpg",
+    contentSrc: "assets/a3image2.jpg",
     contentTxt: "",
   },
   {
-    accountId: 1,
+    accountId: 3, 
     contentId: 3,
-    contentSrc: "assets/image3.jpg",
+    contentSrc: "assets/a3image3.jpg",
+    contentTxt: "",
+  },
+  {
+    accountId: 3, 
+    contentId: 4,
+    contentSrc: "assets/a3image4.jpg",
+    contentTxt: "",
+  },
+  {
+    accountId: 3, 
+    contentId: 5,
+    contentSrc: "assets/a3image5.jpg",
+    contentTxt: "",
+  },
+  {
+    accountId: 3, 
+    contentId: 6,
+    contentSrc: "assets/a3image6.jpg",
+    contentTxt: "",
+  },
+  {
+    accountId: 3, 
+    contentId: 7,
+    contentSrc: "assets/a3image7.jpg",
+    contentTxt: "",
+  },
+  {
+    accountId: 3, 
+    contentId: 8,
+    contentSrc: "assets/a3image8.jpg",
+    contentTxt: "",
+  },
+  {
+    accountId: 3, 
+    contentId: 9,
+    contentSrc: "assets/a3image9.jpg",
     contentTxt: "",
   },
   {
@@ -126,9 +163,9 @@ const accountList = [
   },
   {
     accountId: 3,
-    accountName: "계정 3",
-    accountSrc: "assets/image3.jpg",
-    accountTxt: "소개 3",
+    accountName: "관악구카푸어",
+    accountSrc: "assets/a3profilepic.jpg",
+    accountTxt: "관악구카푸어입니다. 카푸어가 되고싶다고요? 그럼 들어오세요",
   },
 ];
 
