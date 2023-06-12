@@ -24,7 +24,7 @@ import {
 
 import React, { useState, useEffect, useRef } from "react";
 import Thumbnail from "@/components/Thumbnail";
-import Modal from "@/components/modal";
+import Modal from "@/components/Modal";
 import Intro from "@/components/Intro";
 // import P5Sketch from "@/components/P5Sketch";
 import HomePage from "@/components/HomePage";
