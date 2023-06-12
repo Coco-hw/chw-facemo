@@ -30,7 +30,7 @@ import { setActive } from "@material-tailwind/react/components/Tabs/TabsContext"
 // DB의 facemo 컬렉션 참조를 만듭니다. 컬렉션 사용시 잘못된 컬렉션 이름 사용을 방지합니다.
 const facemoCollection = collection(db, "facemo");
 const contentCollection = collection(db, "content");
-const accountCollection = collection(db, "account")
+const accountCollection = collection(db, "account");
 
 /////////////////////////////////////////////////////
 
@@ -111,31 +111,31 @@ export default function Home() {
   // },[]);
 
   // contentData 불러오기
-  const getContent = async() => {
+  const getContent = async () => {
     // Firestore 쿼리 만들기
-    const q = query(contentCollection, orderBy("contentDB_id", "desc"));
+    const q = query(contentCollection, orderBy("contentDB_id", "asc"));
     // Firestore에서 contentData를 조회합니다.
     const results = await getDocs(q);
-    const newContent=[];
+    const newContent = [];
     // 가져온 contentData를 contentList에 담습니다.
     results.docs.forEach((doc) => {
-      newContent.push({ ...doc.data()});
+      newContent.push({ ...doc.data() });
     });
     setContentList(newContent);
     console.log(contentList.length);
-  }
-  const getAccount = async() => {
+  };
+  const getAccount = async () => {
     // Firestore 쿼리 만들기
-    const q = query(accountCollection, orderBy("accountId", "desc"));
+    const q = query(accountCollection, orderBy("accountId", "asc"));
     // Firestore에서 accountData를 조회합니다.
     const results = await getDocs(q);
-    const newAccount=[];
+    const newAccount = [];
     // 가져온 contentData를 contentList에 담습니다.
     results.docs.forEach((doc) => {
-      newAccount.push({ ...doc.data()});
+      newAccount.push({ ...doc.data() });
     });
     setAccountList(newAccount);
-  }
+  };
 
   // replyData 불러오기
   // replyData = { contentId, replyId, replyEmoji, replyTxt, timestamp}
