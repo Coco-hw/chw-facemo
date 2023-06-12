@@ -6,7 +6,7 @@ import { Button, Avatar, Typography } from "@material-tailwind/react";
 
 import React, { useState, useEffect, useRef } from "react";
 import Thumbnail from "@/components/Thumbnail";
-import Modal from "@/components/modal";
+import Modal from "@/components/Modal";
 import Intro from "@/components/Intro";
 // import P5Sketch from "@/components/P5Sketch";
 import HomePage from "@/components/HomePage";
@@ -15,24 +15,7 @@ import { useRouter } from "next/router";
 ///////////////////////////////////////////////////////
 // samples
 const contentList = [
-  // {
-  //   accountId: 1,
-  //   contentId: 1,
-  //   contentSrc: "assets/image1.jpg",
-  //   contentTxt: "",
-  // },
-  // {
-  //   accountId: 1,
-  //   contentId: 2,
-  //   contentSrc: "assets/image2.jpg",
-  //   contentTxt: "",
-  // },
-  // {
-  //   accountId: 1,
-  //   contentId: 3,
-  //   contentSrc: "assets/image3.jpg",
-  //   contentTxt: "",
-  // },
+  // \
   {
     accountId: 3, 
     contentId: 1,
