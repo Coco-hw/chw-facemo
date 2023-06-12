@@ -92,7 +92,10 @@ const Modal = ({
 
   // Render
   return (
-    <div className="relative flex w-2/3 h-2/3">
+    <div
+      className="relative flex w-2/3 h-2/3"
+      onClick={(e) => e.stopPropagation()}
+    >
       {/* 화면 밖 누르면 모달 꺼지게 구현하고 싶었으나 실패. 부모요소에 onClick 두면 모달 안쪽 눌러도 꺼짐. */}
       {/* <div className="z-10 h-screen" onClick={closeBundleModal}></div> */}
       {/* <div className="relative bg-transparent w-4/5 z-20"> */}
