@@ -2,19 +2,19 @@ import { Fragment } from "react";
 import { Alert, Typography } from "@material-tailwind/react";
 import { FaceFrownIcon } from "@heroicons/react/24/solid";
 
-const EmojiAlert = ({open}) => {
-  
-  return(
-    <Fragment>
+const EmojiAlert = ({ open }) => {
+  return (
+    <Fragment className="">
       <Alert
-      variant="gradient"
-      color="red"
-      icon={<FaceFrownIcon className="h-6 w-6" />}
-      open={open}
-      animate={{
-        mount: { y: 0 },
-        unmount: { y: 100 },
-      }}
+        variant="gradient"
+        color="red"
+        icon={<FaceFrownIcon className="h-6 w-6" />}
+        open={open}
+        animate={{
+          mount: { y: 0 },
+          unmount: { y: 100 },
+        }}
+        className="absolute"
       >
         <Typography variant="h5" color="white">
           표정 분석에 실패했어요!
@@ -25,5 +25,5 @@ const EmojiAlert = ({open}) => {
       </Alert>
     </Fragment>
   );
-}
+};
 export default EmojiAlert;

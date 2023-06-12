@@ -2,6 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 import EmojiAlert from "@/components/EmojiAlert";
 import { Button, Input } from "@material-tailwind/react";
+import {
+  XMarkIcon,
+  CameraIcon,
+  ChatBubbleLeftIcon,
+} from "@heroicons/react/24/solid";
 
 // biggest emotion을 추출할 함수 biggestOf 선언
 const biggestOf = (detectedExpressions) => {
@@ -36,6 +41,17 @@ const Bundle = ({
   stopInterval,
   videoRef,
 }) => {
+  // 감정에 따른 default 입력값 설정
+  const [placeholder, setPlaceholder] = useState("");
+
+  const handleFocus = () => {
+    setPlaceholder("흠.");
+  };
+
+  const handleBlur = () => {
+    setPlaceholder("");
+  };
+
   // streaming status, reference
   const [isStreaming, setIsStreaming] = useState(true);
 
@@ -143,7 +159,9 @@ const Bundle = ({
 
     // get video & canvas
     const video = videoRef.current;
-    if(!video){return;}
+    if (!video) {
+      return;
+    }
     video.srcObject = stream;
     const canvas = document.getElementById("canvas");
 
@@ -176,16 +194,16 @@ const Bundle = ({
   }, []);
 
   useEffect(() => {
-    if(detected){
+    if (detected) {
       setAlert(false);
     }
   }, [detected]);
 
   const pauseVideo = () => {
     // return none if not detected
-    if (!detected){ 
+    if (!detected) {
       setAlert(true);
-      return; 
+      return;
     }
     // stop detecting
     setDetecting(false);
@@ -210,40 +228,58 @@ const Bundle = ({
   };
 
   return (
-    <div className="flex flex-col w-full h-full flex items-center justify-center bg-gray-200">
-      <div>
+    <div className="relative flex flex-col w-full h-full flex items-center justify-center bg-black">
+      <div className="">
         <canvas id="canvas" className="bg-transparent absolute" />
-        <video id="video" ref={videoRef} autoPlay />
+        <video id="video" ref={videoRef} className="" autoPlay />
       </div>
       {isStreaming ? (
-        <div className="w-full flex flex-row justify-around p-3 gap-2">
-          <Button className="basis-1/2" color="white" onClick={pauseVideo}>
-            This emoji!
-          </Button>
-          <Button className="basis-1/2" color="white" onClick={closeBundle}>
-            Return to emojiList
+        <div className="w-full flex flex-row justify-center items-center m-5">
+          <Button
+            className="flex justify-center items-center p-4"
+            color="white"
+            onClick={pauseVideo}
+            rounded={true}
+          >
+            <CameraIcon strokeWidth={1} className="h-10 w-10"></CameraIcon>
           </Button>
         </div>
       ) : (
-        <div className="w-full flex flex-col p-3">
-          {/* 댓글을 입력받는 텍스트 필드입니다. */}
-          <Input
-            label="무엇을 느꼈나요? (최대 20자)"
-            value={inputTxt}
-            maxLength={20}
-            onChange={(e) => setInputTxt(e.target.value)}
-          />
-          <div className="w-full flex flex-row justify-around mt-3 gap-2">
-            <Button className="basis-1/2" color="white" onClick={restartVideo}>
-              Try Again
-            </Button>
-            <Button className="basis-1/2" color="white" onClick={savePhoto}>
-              OK
+        <div className="w-full flex flex-row justify-around items-center p-3 gap-2">
+          <Button
+            className="flex justify-center item-center"
+            color="white"
+            onClick={restartVideo}
+          >
+            <CameraIcon strokeWidth={1} className="h-5 w-5"></CameraIcon>
+          </Button>
+          <div className="relative w-full">
+            {/* 댓글을 입력받는 텍스트 필드입니다. */}
+            <Input
+              label="무엇을 느꼈나요? (최대 20자)"
+              value={inputTxt}
+              placeholder={placeholder}
+              maxLength={20}
+              onChange={(e) => setInputTxt(e.target.value)}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              className="text-white"
+            />
+            <Button
+              size="sm"
+              color={"indigo"}
+              className="!absolute right-1 top-1 rounded"
+              onClick={savePhoto}
+            >
+              <ChatBubbleLeftIcon
+                strokeWidth={1}
+                className="h-4 w-4"
+              ></ChatBubbleLeftIcon>
             </Button>
           </div>
         </div>
       )}
-      <EmojiAlert open={alert}/>
+      <EmojiAlert open={alert} />
     </div>
   );
 };

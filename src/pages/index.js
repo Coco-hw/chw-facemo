@@ -1,17 +1,7 @@
 const inter = Inter({ subsets: ["latin"] });
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-import {
-  Button,
-  Avatar,
-  Typography,
-  Card,
-  List,
-  ListItem,
-  ListItemPrefix,
-  ListItemSuffix,
-  Chip,
-} from "@material-tailwind/react";
+import { Button, Avatar, Typography } from "@material-tailwind/react";
 import {
   PresentationChartBarIcon,
   ShoppingBagIcon,
@@ -20,6 +10,7 @@ import {
   InboxIcon,
   PowerIcon,
 } from "@heroicons/react/24/solid";
+import { HomeIcon } from "@heroicons/react/24/outline";
 ///////////////////////////////////////////////////////////////////
 
 import React, { useState, useEffect, useRef } from "react";
@@ -162,6 +153,14 @@ export default function Home() {
   // 전체 replyList를 담는 변수입니다.
   const [replyList, setReplyList] = useState([]); // { contentId, replyId, replyEmoji, replyTxt, timestamp, justUpdated}
 
+  // 아바타 보여줄지 말지를 결정
+  const [showAvatars, setShowAvatars] = useState(false);
+
+  const goToHome = () => {
+    setCurrentAccountId(-1);
+    setShowAvatars(false);
+  };
+
   // 비디오 Ref를 담는 변수입니다.
   const videoRef = useRef(null);
   // 웹캠을 끄는 함수입니다.
@@ -265,64 +264,79 @@ export default function Home() {
   return (
     <div className="bg-white h-screen">
       {currentAccountId < 0 ? (
-        <>
-          {/* <Intro /> */}
+        <div>
           <HomePage
             accountList={accountList}
             handleAccountClick={setCurrentAccountId}
+            HomeIcon={HomeIcon}
+            showAvatars={showAvatars}
+            setShowAvatars={setShowAvatars}
           />
-        </>
-      ) : (
-        <div className="flex flex-col justify-center items-center">
-          {/* Render accountSrc, accountName, accountTxt */}
-          <div className="">
-            {accountList
-              .filter((account) => account.accountId === currentAccountId)
-              .map((account) => (
-                <div className="flex flex-row gap-5 mt-10 mb-10">
-                  <div>
-                    <Avatar
-                      src={account.accountSrc}
-                      alt={account.accountId}
-                      size="xxl"
-                      className="border-black border-1"
-                    />
-                  </div>
-                  <div className="flex flex-col justify-center gap-1">
-                    <Typography variant="h6" color="black" className="text-3xl">
-                      {account.accountName}
-                    </Typography>
-                    <Typography
-                      variant="large"
-                      color="gray"
-                      className="font-normal"
-                    >
-                      {account.accountTxt}
-                    </Typography>
-                  </div>
-                </div>
-              ))}
-          </div>
-          {/* Render thumbnails */}
-          <div className="grid grid-cols-3 gap-4">
-            {currentAccountId > 0 &&
-              contentList
-                .filter((content) => content.accountId === currentAccountId)
-                .map((content) => (
-                  <Thumbnail
-                    key={content.contentId}
-                    content={content}
-                    openModal={openModal}
-                    setCurrentContentId={setCurrentContentId}
-                  />
-                ))}
-          </div>
         </div>
+      ) : (
+        <>
+          {/* 홈 버튼 */}
+          <button
+            className="absolute top-4 left-4 p-2 rounded-md bg-transparent hover:bg-white focus:outline-none"
+            onClick={goToHome}
+          >
+            <HomeIcon className="h-6 w-6 text-black opacity-75" />
+          </button>
+          <div className="flex flex-col justify-center items-center">
+            {/* Render accountSrc, accountName, accountTxt */}
+            <div className="">
+              {accountList
+                .filter((account) => account.accountId === currentAccountId)
+                .map((account) => (
+                  <div className="flex flex-row gap-5 mt-10 mb-10">
+                    <div>
+                      <Avatar
+                        src={account.accountSrc}
+                        alt={account.accountId}
+                        size="xxl"
+                        className="border-black border-1"
+                      />
+                    </div>
+                    <div className="flex flex-col justify-center gap-1">
+                      <Typography
+                        variant="h6"
+                        color="black"
+                        className="text-3xl"
+                      >
+                        {account.accountName}
+                      </Typography>
+                      <Typography
+                        variant="large"
+                        color="gray"
+                        className="font-normal"
+                      >
+                        {account.accountTxt}
+                      </Typography>
+                    </div>
+                  </div>
+                ))}
+            </div>
+            {/* Render thumbnails */}
+            <div className="grid grid-cols-3 gap-4">
+              {currentAccountId > 0 &&
+                contentList
+                  .filter((content) => content.accountId === currentAccountId)
+                  .map((content) => (
+                    <Thumbnail
+                      key={content.contentId}
+                      content={content}
+                      openModal={openModal}
+                      setCurrentContentId={setCurrentContentId}
+                    />
+                  ))}
+            </div>
+          </div>
+        </>
       )}
 
       {/* Render modal */}
       {modalOpened && (
-        <>
+        <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center">
           {/* 모달 창밖 레이어. 주변을 어둡게 하고 클릭 시 모달이 꺼지게 한다. -> 실행 안 됨. */}
           <div onClick={closeModal}></div>
           {/* 모달 창 */}
@@ -336,7 +350,7 @@ export default function Home() {
             videoRef={videoRef}
             stopWebcam={stopWebcam}
           />
-        </>
+        </div>
       )}
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Bundle from "@/components/Bundle";
 import Emoji from "@/components/Emoji";
 import { Button, Typography } from "@material-tailwind/react";
-import { XMarkIcon } from "@heroicons/react/24/solid";
+import { XMarkIcon, CameraIcon } from "@heroicons/react/24/solid";
 
 // return hovering canvas with content image, camera, replyList
 const Modal = ({
@@ -81,76 +81,88 @@ const Modal = ({
 
   // Render
   return (
-    <div className="fixed inset-0 flex justify-center items-center pt-8">
+    <div className="relative flex w-2/3 h-2/3">
       {/* 화면 밖 누르면 모달 꺼지게 구현하고 싶었으나 실패. 부모요소에 onClick 두면 모달 안쪽 눌러도 꺼짐. */}
-      <div className="z-10 h-screen" onClick={closeBundleModal}></div>
-      <div className="relative bg-transparent w-4/5 z-20">
-        {/* close button */}
-        <button
-          className="absolute top-2 right-2 text-gray-500 z-20"
-          onClick={closeBundleModal}
-        >
-          <XMarkIcon strokeWidth={2} className="h-10 w-10"></XMarkIcon>
-        </button>
+      {/* <div className="z-10 h-screen" onClick={closeBundleModal}></div> */}
+      {/* <div className="relative bg-transparent w-4/5 z-20"> */}
+      {/* close button */}
+      <button
+        className="absolute top-2 right-2 text-gray-500 z-20"
+        onClick={closeBundleModal}
+      >
+        <XMarkIcon strokeWidth={2} className="h-10 w-10"></XMarkIcon>
+      </button>
 
-        {/* image and {Bundle or replyList} box */}
-        <div className="flex flex-row">
-          {/* contentSrc(image) */}
-          <div className="relative">
-            <div>
-              <img
-                src={currentContent.contentSrc}
-                alt={`Content ${currentContentId}`}
-                style={{ width: "600px", height: "600px", objectFit: "cover" }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-0 hover:opacity-100 transition-opacity duration-500">
-                <div className="absolute bottom-0 left-0 p-4 text-white">
-                  <Typography variant="paragraph" color="white">
-                    {currentContent.contentTxt}
-                  </Typography>
-                </div>
-              </div>
+      {/* image and {Bundle or replyList} box */}
+      <div className="flex flex-row h-{600}">
+        {/* contentSrc(image) */}
+        <div className="relative">
+          {/* <div> */}
+          <img
+            src={currentContent.contentSrc}
+            alt={`Content ${currentContentId}`}
+            style={{ width: "600px", height: "100%", objectFit: "cover" }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-0 hover:opacity-100 transition-opacity duration-500">
+            <div className="absolute bottom-0 left-0 p-4 text-white">
+              <Typography variant="paragraph" color="white">
+                {currentContent.contentTxt}
+              </Typography>
             </div>
           </div>
+          {/* </div> */}
+        </div>
 
-          {/* Bundle or emojiList */}
-          {bundleOpened ? (
-            <div className="basis-1/2">
-              <div className="h-full flex justify-center items-center">
-                <Bundle
-                  closeBundle={closeBundle}
-                  setCurrentEmojiRef={setCurrentEmojiRef}
-                  saveReply={saveReply}
-                  inputTxt={inputTxt}
-                  setInputTxt={setInputTxt}
-                  intervalRef={intervalRef}
-                  stopInterval={stopInterval}
-                  videoRef={videoRef}
-                />
-              </div>
+        {/* Bundle or emojiList */}
+        {bundleOpened ? (
+          <div className="relative basis-1/2">
+            <Button
+              className="absolute top-3 left-2 z-20"
+              color="indigo"
+              size="sm"
+              onClick={closeBundle}
+            >
+              show emoji list
+            </Button>
+            <div className="h-full flex justify-center items-center">
+              <Bundle
+                closeBundle={closeBundle}
+                setCurrentEmojiRef={setCurrentEmojiRef}
+                saveReply={saveReply}
+                inputTxt={inputTxt}
+                setInputTxt={setInputTxt}
+                intervalRef={intervalRef}
+                stopInterval={stopInterval}
+                videoRef={videoRef}
+              />
             </div>
-          ) : (
-            <div className="basis-1/2 bg-gray-200">
-              {/* emoji list */}
-              <div className="flex flex-wrap">
+          </div>
+        ) : (
+          <div className="basis-1/2 flex flex-col bg-gray-200 p-10">
+            {/* emoji list */}
+            <div className="h-full overflow-auto">
+              <div className="flex flex-wrap justify-start p-1">
                 {currentReplyList.map((replyData) => (
                   <Emoji replyData={replyData} />
                 ))}
               </div>
+            </div>
 
-              {/* retake pic button */}
+            {/* retake pic button */}
+            <div className="w-full flex justify-center">
               <Button
-                variant="filled"
-                size="lg"
+                className="flex justify-center items-center p-4 mt-10"
                 color="white"
                 onClick={openBundle}
+                rounded={true}
               >
-                retake picture
+                <CameraIcon strokeWidth={1} className="h-10 w-10"></CameraIcon>
               </Button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
+      {/* </div> */}
     </div>
   );
 };
