@@ -30,7 +30,7 @@ import { setActive } from "@material-tailwind/react/components/Tabs/TabsContext"
 // DB의 facemo 컬렉션 참조를 만듭니다. 컬렉션 사용시 잘못된 컬렉션 이름 사용을 방지합니다.
 const facemoCollection = collection(db, "facemo");
 const contentCollection = collection(db, "content");
-const accountCollection = collection(db, "account")
+const accountCollection = collection(db, "account");
 
 /////////////////////////////////////////////////////
 
@@ -114,30 +114,31 @@ export default function Home() {
   // },[]);
 
   // contentData 불러오기
-  const getContent = async() => {
+  const getContent = async () => {
     // Firestore 쿼리 만들기
     const q = query(contentCollection, orderBy("contentDB_id", "asc"));
     // Firestore에서 contentData를 조회합니다.
     const results = await getDocs(q);
-    const newContent=[];
+    const newContent = [];
     // 가져온 contentData를 contentList에 담습니다.
     results.docs.forEach((doc) => {
-      newContent.push({ ...doc.data()});
+      newContent.push({ ...doc.data() });
     });
     setContentList(newContent);
-  }
+  };
+  
   const getAccount = async() => {
     // Firestore 쿼리 만들기
     const q = query(accountCollection, orderBy("accountId", "asc"));
     // Firestore에서 accountData를 조회합니다.
     const results = await getDocs(q);
-    const newAccount=[];
+    const newAccount = [];
     // 가져온 contentData를 contentList에 담습니다.
     results.docs.forEach((doc) => {
-      newAccount.push({ ...doc.data()});
+      newAccount.push({ ...doc.data() });
     });
     setAccountList(newAccount);
-  }
+  };
 
   // replyData 불러오기
   // replyData = { contentId, replyId, replyEmoji, replyTxt, timestamp}
@@ -324,21 +325,27 @@ export default function Home() {
 
       {/* Render modal */}
       {modalOpened && (
-        <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center">
-          {/* 모달 창밖 레이어. 주변을 어둡게 하고 클릭 시 모달이 꺼지게 한다. -> 실행 안 됨. */}
-          <div onClick={closeModal}></div>
-          {/* 모달 창 */}
-          <Modal
-            contentList={contentList}
-            replyList={replyList}
-            currentAccountId={currentAccountId}
-            currentContentId={currentContentId}
-            closeModal={closeModal}
-            uploadReply={uploadReply}
-            videoRef={videoRef}
-            stopWebcam={stopWebcam}
-          />
-        </div>
+        <>
+          <div className="absolute w-screen h-screen inset-0 z-10 bg-black opacity-60 z-0"></div>
+          <div
+            className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-10"
+            onClick={closeModal}
+          >
+            {/* 모달 창밖 레이어. 주변을 어둡게 하고 클릭 시 모달이 꺼지게 한다. -> 실행 안 됨. */}
+            <div></div>
+            {/* 모달 창 */}
+            <Modal
+              contentList={contentList}
+              replyList={replyList}
+              currentAccountId={currentAccountId}
+              currentContentId={currentContentId}
+              closeModal={closeModal}
+              uploadReply={uploadReply}
+              videoRef={videoRef}
+              stopWebcam={stopWebcam}
+            />
+          </div>
+        </>
       )}
     </div>
   );
