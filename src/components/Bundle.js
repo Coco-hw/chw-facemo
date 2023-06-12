@@ -28,13 +28,13 @@ const mapEmoji = {
 };
 // emotion을 text로 변환할 오브젝트 mapEmoji 설정
 const mapTxt = {
-  angry: "으으 너무 화나",
-  disgusted: "우웩!",
-  fearful: "으악!",
-  happy: "난 행복해~!",
-  neutral: "음...",
-  sad: "슬퍼요ㅠㅠ",
-  surprised: "화들짝!",
+  angry: "화나요!",
+  disgusted: "싫어요!",
+  fearful: "무서워요!",
+  happy: "행복해요!",
+  neutral: "흠!",
+  sad: "슬퍼요..",
+  surprised: "깜짝이야!",
 };
 
 
