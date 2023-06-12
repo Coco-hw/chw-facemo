@@ -113,7 +113,7 @@ export default function Home() {
   // contentData 불러오기
   const getContent = async() => {
     // Firestore 쿼리 만들기
-    const q = query(contentCollection, orderBy("contentDB_id", "desc"));
+    const q = query(contentCollection, orderBy("contentDB_id", "asc"));
     // Firestore에서 contentData를 조회합니다.
     const results = await getDocs(q);
     const newContent=[];
@@ -126,7 +126,7 @@ export default function Home() {
   }
   const getAccount = async() => {
     // Firestore 쿼리 만들기
-    const q = query(accountCollection, orderBy("accountId", "desc"));
+    const q = query(accountCollection, orderBy("accountId", "asc"));
     // Firestore에서 accountData를 조회합니다.
     const results = await getDocs(q);
     const newAccount=[];
