@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
+import TextBox from "@/components/TextBox";
 import EmojiAlert from "@/components/EmojiAlert";
 import { Button, Input } from "@material-tailwind/react";
 import {
@@ -30,13 +31,26 @@ const mapEmoji = {
   sad: "😥",
   surprised: "😲",
 };
+// emotion을 text로 변환할 오브젝트 mapEmoji 설정
+const mapTxt = {
+  angry: "화나요!",
+  disgusted: "싫어요!",
+  fearful: "무서워요!",
+  happy: "행복해요!",
+  neutral: "흠!",
+  sad: "슬퍼요..",
+  surprised: "깜짝이야!",
+};
 
 const Bundle = ({
   closeBundle,
   setCurrentEmojiRef,
+  currentEmoji,
   saveReply,
   inputTxt,
   setInputTxt,
+  sampleTxt,
+  setSampleTxtRef,
   intervalRef,
   stopInterval,
   videoRef,
@@ -45,7 +59,7 @@ const Bundle = ({
   const [placeholder, setPlaceholder] = useState("");
 
   const handleFocus = () => {
-    setPlaceholder("흠.");
+    setPlaceholder(sampleTxt);
   };
 
   const handleBlur = () => {
@@ -107,6 +121,7 @@ const Bundle = ({
 
     // reset tempEmoji
     var tempEmoji = [];
+    var tempTxt = [];
 
     // if not detected:
     if (!resizedDetections.length) {
@@ -124,6 +139,7 @@ const Bundle = ({
       const expression = biggestOf(detection.expressions);
       // update tempEmoji
       tempEmoji.push(expression);
+      tempTxt.push(mapTxt[expression]);
 
       // draw rectangles
       context.strokeStyle = "white";
@@ -136,8 +152,8 @@ const Bundle = ({
       context.fillText(emoji, box.x + box.width / 2 - 25, box.y - 20);
     });
     // set currentEmoji to emojis(in string format)
-    console.log(tempEmoji);
     setCurrentEmojiRef.current(tempEmoji);
+    setSampleTxtRef.current(tempTxt.join(" "));
   };
 
   // stream and set detect interval
@@ -189,7 +205,6 @@ const Bundle = ({
 
   // activate streamDetact when first rendered & detecting staus becomes true
   useEffect(() => {
-    console.log("useEffect");
     streamDetect();
   }, []);
 
@@ -221,9 +236,9 @@ const Bundle = ({
     setDetecting(true);
   };
 
-  const savePhoto = () => {
+  const savePhoto = async () => {
     // save reply and close bundle
-    saveReply();
+    await saveReply();
     closeBundle();
   };
 
@@ -257,8 +272,8 @@ const Bundle = ({
             {/* 댓글을 입력받는 텍스트 필드입니다. */}
             <Input
               label="무엇을 느꼈나요? (최대 20자)"
-              value={inputTxt}
               placeholder={placeholder}
+              value={inputTxt}
               maxLength={20}
               onChange={(e) => setInputTxt(e.target.value)}
               onFocus={handleFocus}
