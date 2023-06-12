@@ -8,203 +8,8 @@ import { HomeIcon } from "@heroicons/react/24/solid";
 import React, { useState, useEffect, useRef } from "react";
 import Thumbnail from "@/components/Thumbnail";
 import Modal from "@/components/Modal";
-import Intro from "@/components/Intro";
 // import P5Sketch from "@/components/P5Sketch";
 import HomePage from "@/components/HomePage";
-import { useRouter } from "next/router";
-
-///////////////////////////////////////////////////////
-// samples
-const contentList = [
-  // \
-  {
-    accountId: 1,
-    contentId: 1,
-    contentSrc: "assets/chw-image_1.jpg",
-    contentTxt: "붉은머리오목눈이(뱁새): 갸웃?",
-  },
-  {
-    accountId: 1,
-    contentId: 2,
-    contentSrc: "assets/chw-image_2.jpg",
-    contentTxt: "",
-  },
-  {
-    accountId: 1,
-    contentId: 3,
-    contentSrc: "assets/chw-image_3.jpg",
-    contentTxt: "",
-  },
-  {
-    accountId: 1,
-    contentId: 4,
-    contentSrc: "assets/chw-image_4.jpg",
-    contentTxt: "",
-  },
-  {
-    accountId: 1,
-    contentId: 5,
-    contentSrc: "assets/chw-image_5.jpg",
-    contentTxt: "",
-  },
-  {
-    accountId: 1,
-    contentId: 6,
-    contentSrc: "assets/chw-image_6.jpg",
-    contentTxt: "",
-  },
-  {
-    accountId: 1,
-    contentId: 7,
-    contentSrc: "assets/chw-image_7.jpg",
-    contentTxt: "",
-  },
-  {
-    accountId: 1,
-    contentId: 8,
-    contentSrc: "assets/chw-image_8.jpg",
-    contentTxt: "",
-  },
-  {
-    accountId: 1,
-    contentId: 9,
-    contentSrc: "assets/chw-image_9.jpg",
-    contentTxt: "",
-  },
-  {
-    accountId: 3,
-    contentId: 1,
-    contentSrc: "assets/a3image1.jpg",
-    contentTxt: "녹슨 자동차의 눈물",
-  },
-  {
-    accountId: 3,
-    contentId: 2,
-    contentSrc: "assets/a3image2.jpg",
-    contentTxt: "불맛 나는 차",
-  },
-  {
-    accountId: 3,
-    contentId: 3,
-    contentSrc: "assets/a3image3.jpg",
-    contentTxt: "현대 테라칸 (2001)",
-  },
-  {
-    accountId: 3,
-    contentId: 4,
-    contentSrc: "assets/a3image4.jpg",
-    contentTxt: "부가티 베이론 V12",
-  },
-  {
-    accountId: 3,
-    contentId: 5,
-    contentSrc: "assets/a3image5.jpg",
-    contentTxt: "빨간맛 페라리 캘리포니아",
-  },
-  {
-    accountId: 3,
-    contentId: 6,
-    contentSrc: "assets/a3image6.jpg",
-    contentTxt: "배기음의 마왕, 마세라티 그란투리스모",
-  },
-  {
-    accountId: 3,
-    contentId: 7,
-    contentSrc: "assets/a3image7.jpg",
-    contentTxt: "심해 자동차",
-  },
-  {
-    accountId: 3,
-    contentId: 8,
-    contentSrc: "assets/a3image8.jpg",
-    contentTxt: "폐차 시켜줘",
-  },
-  {
-    accountId: 3,
-    contentId: 9,
-    contentSrc: "assets/a3image9.jpg",
-    contentTxt: "부의 상징, 롤스로이스 팬텀",
-  },
-  {
-    accountId: 2,
-    contentId: 1,
-    contentSrc: "assets/magnolia.jpg",
-    contentTxt: "폴 토마스 앤더슨, <매그놀리아> (1999)",
-  },
-  {
-    accountId: 2,
-    contentId: 2,
-    contentSrc: "assets/paprika.jpg",
-    contentTxt: "콘 사토시, <파프리카>(2006)",
-  },
-
-  {
-    accountId: 2,
-    contentId: 3,
-    contentSrc: "assets/mauvais_sang.jpg",
-    contentTxt: "레오 까락스, <나쁜 피> (1986)",
-  },
-  {
-    accountId: 2,
-    contentId: 4,
-    contentSrc: "assets/lily_chouchou.jpg",
-    contentTxt: "이와이 슌지, <릴리 슈슈의 모든 것> (2001)",
-  },
-  {
-    accountId: 2,
-    contentId: 5,
-    contentSrc: "assets/space_odyssey_2001.jpg",
-    contentTxt: "스탠리 큐브릭, <2001 스페이스 오디세이> (1968)",
-  },
-  {
-    accountId: 2,
-    contentId: 6,
-    contentSrc: "assets/the_lobster.jpg",
-    contentTxt: "요르고스 란티모스, <더 랍스터> (2015)",
-  },
-
-  {
-    accountId: 2,
-    contentId: 7,
-    contentSrc: "assets/playtime.jpg",
-    contentTxt: "자크 타티, <플레이타임> (1967)",
-  },
-  {
-    accountId: 2,
-    contentId: 8,
-    contentSrc: "assets/nope.jpeg",
-    contentTxt: "조던 필, <놉> (2022)",
-  },
-  {
-    accountId: 2,
-    contentId: 9,
-    contentSrc: "assets/man_with_camera.jpg",
-    contentTxt: "지가 베르토프, <카메라를 든 사나이> (1929)",
-  },
-];
-
-///////////////////////////////////////////////////
-// sample accounts
-const accountList = [
-  {
-    accountId: 1, // account의 순서를 지정
-    accountName: "날으는솜뭉치", // account의 이름 지정
-    accountSrc: "assets/image1.jpg", // account의 프로필 사진 지정
-    accountTxt: "feat. 서울대학교 야조회", // account의 한 줄 소개 지정
-  },
-  {
-    accountId: 2,
-    accountName: "영덕대게",
-    accountSrc: "assets/youngduck_crab.jpg",
-    accountTxt: "영화 덕후 대박 계정",
-  },
-  {
-    accountId: 3,
-    accountName: "관악구카푸어",
-    accountSrc: "assets/a3profilepic.jpg",
-    accountTxt: "카푸어가 되고 싶다고요? 그럼 들어오세요!",
-  },
-];
 
 ///////////////////////////////////////////////////
 // firebase
@@ -215,6 +20,7 @@ import {
   // doc,
   getDocs,
   addDoc,
+  // setDoc,
   // updateDoc,
   // deleteDoc,
   orderBy,
@@ -223,6 +29,8 @@ import { setActive } from "@material-tailwind/react/components/Tabs/TabsContext"
 
 // DB의 facemo 컬렉션 참조를 만듭니다. 컬렉션 사용시 잘못된 컬렉션 이름 사용을 방지합니다.
 const facemoCollection = collection(db, "facemo");
+const contentCollection = collection(db, "content");
+const accountCollection = collection(db, "account")
 
 /////////////////////////////////////////////////////
 
@@ -235,6 +43,10 @@ export default function Home() {
   const [currentContentId, setCurrentContentId] = useState(null);
   // 전체 replyList를 담는 변수입니다.
   const [replyList, setReplyList] = useState([]); // { contentId, replyId, replyEmoji, replyTxt, timestamp, justUpdated}
+  // 전체 contentList를 담는 변수입니다.
+  const [contentList, setContentList] = useState([]);
+  // 전체 accountList를 담는 변수입니다.
+  const [accountList, setAccountList] = useState([]);
 
   // 아바타 보여줄지 말지를 결정
   const [showAvatars, setShowAvatars] = useState(false);
@@ -274,6 +86,57 @@ export default function Home() {
     turnoffReply();
   };
 
+  // const [s, sets] = useState(true);
+
+  // uploadContent for the first time
+  // const uploadContent = () => {
+  //   contentList.map(async(content) => {
+  //     const docRef = await addDoc(contentCollection, content);
+  //   });
+  // }
+  // uploadAccount for the first time
+  // const uploadAccount = () => {
+  //   accountList.map(async(account) => {
+  //     const docRef = await addDoc(accountCollection, account);
+  //   });
+  // }
+
+  // One time only
+  // useEffect(async() => {
+  //   if(s){
+  //     uploadContent();
+  //     uploadAccount();
+  //   }
+  //   sets(false);
+  // },[]);
+
+  // contentData 불러오기
+  const getContent = async() => {
+    // Firestore 쿼리 만들기
+    const q = query(contentCollection, orderBy("contentDB_id", "desc"));
+    // Firestore에서 contentData를 조회합니다.
+    const results = await getDocs(q);
+    const newContent=[];
+    // 가져온 contentData를 contentList에 담습니다.
+    results.docs.forEach((doc) => {
+      newContent.push({ ...doc.data()});
+    });
+    setContentList(newContent);
+    console.log(contentList.length);
+  }
+  const getAccount = async() => {
+    // Firestore 쿼리 만들기
+    const q = query(accountCollection, orderBy("accountId", "desc"));
+    // Firestore에서 accountData를 조회합니다.
+    const results = await getDocs(q);
+    const newAccount=[];
+    // 가져온 contentData를 contentList에 담습니다.
+    results.docs.forEach((doc) => {
+      newAccount.push({ ...doc.data()});
+    });
+    setAccountList(newAccount);
+  }
+
   // replyData 불러오기
   // replyData = { contentId, replyId, replyEmoji, replyTxt, timestamp}
   const getReply = async () => {
@@ -284,7 +147,7 @@ export default function Home() {
     const results = await getDocs(q);
     const newReply = [];
 
-    //가져온 replyData를 replyList에 담습니다.
+    // 가져온 replyData를 replyList에 담습니다.
     results.docs.forEach((doc) => {
       newReply.push({ ...doc.data(), justUpdated: false });
     });
@@ -294,8 +157,9 @@ export default function Home() {
 
   // 마운트시 firebase에서 replyList 가져오기
   useEffect(() => {
+    getAccount();
+    getContent();
     getReply();
-    console.log(replyList);
   }, []);
 
   // 기존의 updatedStatus를 false로 변경합니다.
