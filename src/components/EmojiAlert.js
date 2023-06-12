@@ -1,12 +1,29 @@
-const EmojiAlert = () => {
-  return(
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-      <strong class="font-bold">표정 분석에 실패했어요!</strong>
-      <span class="block sm:inline">얼굴을 정중앙에 맞춰주세요</span>
-      <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-      </span>
-    </div>
-  );
-}
+import { Fragment } from "react";
+import { Alert, Typography } from "@material-tailwind/react";
+import { FaceFrownIcon } from "@heroicons/react/24/solid";
 
+const EmojiAlert = ({ open }) => {
+  return (
+    <Fragment className="">
+      <Alert
+        variant="gradient"
+        color="red"
+        icon={<FaceFrownIcon className="h-6 w-6" />}
+        open={open}
+        animate={{
+          mount: { y: 0 },
+          unmount: { y: 100 },
+        }}
+        className="absolute"
+      >
+        <Typography variant="h5" color="white">
+          표정 분석에 실패했어요!
+        </Typography>
+        <Typography color="white" className="mt-2 font-normal">
+          얼굴을 정중앙에 맞춰주세요
+        </Typography>
+      </Alert>
+    </Fragment>
+  );
+};
 export default EmojiAlert;

@@ -1,7 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
+import TextBox from "@/components/TextBox";
 import EmojiAlert from "@/components/EmojiAlert";
-import { Button } from "@material-tailwind/react";
+import { Button, Input } from "@material-tailwind/react";
+import {
+  XMarkIcon,
+  CameraIcon,
+  ChatBubbleLeftIcon,
+} from "@heroicons/react/24/solid";
 
 // biggest emotion을 추출할 함수 biggestOf 선언
 const biggestOf = (detectedExpressions) => {
@@ -25,17 +31,41 @@ const mapEmoji = {
   sad: "😥",
   surprised: "😲",
 };
+// emotion을 text로 변환할 오브젝트 mapEmoji 설정
+const mapTxt = {
+  angry: "화나요!",
+  disgusted: "싫어요!",
+  fearful: "무서워요!",
+  happy: "행복해요!",
+  neutral: "흠!",
+  sad: "슬퍼요..",
+  surprised: "깜짝이야!",
+};
 
 const Bundle = ({
   closeBundle,
   setCurrentEmojiRef,
+  currentEmoji,
   saveReply,
   inputTxt,
   setInputTxt,
+  sampleTxt,
+  setSampleTxtRef,
   intervalRef,
   stopInterval,
   videoRef,
 }) => {
+  // 감정에 따른 default 입력값 설정
+  const [placeholder, setPlaceholder] = useState("");
+
+  const handleFocus = () => {
+    setPlaceholder(sampleTxt);
+  };
+
+  const handleBlur = () => {
+    setPlaceholder("");
+  };
+
   // streaming status, reference
   const [isStreaming, setIsStreaming] = useState(true);
 
@@ -49,7 +79,7 @@ const Bundle = ({
   setDetectedRef.current = setDetected;
 
   // emoji alert status
-  const [emojiAlert, setEmojiAlert] = useState(false);
+  const [alert, setAlert] = useState(false);
 
   // text alert status
   const [textAlert, setTextAlert] = useState(false);
@@ -91,9 +121,10 @@ const Bundle = ({
 
     // reset tempEmoji
     var tempEmoji = [];
+    var tempTxt = [];
 
     // if not detected:
-    if (!resizedDetections.length){
+    if (!resizedDetections.length) {
       setDetectedRef.current(false);
       return;
     }
@@ -108,6 +139,7 @@ const Bundle = ({
       const expression = biggestOf(detection.expressions);
       // update tempEmoji
       tempEmoji.push(expression);
+      tempTxt.push(mapTxt[expression]);
 
       // draw rectangles
       context.strokeStyle = "white";
@@ -120,8 +152,8 @@ const Bundle = ({
       context.fillText(emoji, box.x + box.width / 2 - 25, box.y - 20);
     });
     // set currentEmoji to emojis(in string format)
-    console.log(tempEmoji);
     setCurrentEmojiRef.current(tempEmoji);
+    setSampleTxtRef.current(tempTxt.join(" "));
   };
 
   // stream and set detect interval
@@ -143,7 +175,9 @@ const Bundle = ({
 
     // get video & canvas
     const video = videoRef.current;
-    if(!video){return;}
+    if (!video) {
+      return;
+    }
     video.srcObject = stream;
     const canvas = document.getElementById("canvas");
 
@@ -171,21 +205,20 @@ const Bundle = ({
 
   // activate streamDetact when first rendered & detecting staus becomes true
   useEffect(() => {
-    console.log("useEffect");
     streamDetect();
   }, []);
 
   useEffect(() => {
-    if(detected){
-      setEmojiAlert(false);
+    if (detected) {
+      setAlert(false);
     }
-  }, [detected])
+  }, [detected]);
 
   const pauseVideo = () => {
     // return none if not detected
-    if (!detected){ 
-      setEmojiAlert(true);
-      return; 
+    if (!detected) {
+      setAlert(true);
+      return;
     }
     // stop detecting
     setDetecting(false);
@@ -203,47 +236,65 @@ const Bundle = ({
     setDetecting(true);
   };
 
-  const savePhoto = () => {
+  const savePhoto = async () => {
     // save reply and close bundle
-    saveReply();
+    await saveReply();
     closeBundle();
   };
 
   return (
-    <div className="flex flex-col w-full h-full flex items-center justify-center bg-gray-200">
-      <div>
+    <div className="relative flex flex-col w-full h-full flex items-center justify-center bg-black">
+      <div className="">
         <canvas id="canvas" className="bg-transparent absolute" />
-        <video id="video" ref={videoRef} autoPlay />
+        <video id="video" ref={videoRef} className="" autoPlay />
       </div>
       {isStreaming ? (
-        <div className="w-full flex flex-row justify-around">
-          <Button className="basis-1/2" color="white" onClick={pauseVideo}>
-            This emoji!
-          </Button>
-          <Button className="basis-1/2" color="white" onClick={closeBundle}>
-            Return to emojiList
+        <div className="w-full flex flex-row justify-center items-center m-5">
+          <Button
+            className="flex justify-center items-center p-4"
+            color="white"
+            onClick={pauseVideo}
+            rounded={true}
+          >
+            <CameraIcon strokeWidth={1} className="h-10 w-10"></CameraIcon>
           </Button>
         </div>
       ) : (
-        <div className="w-full flex flex-row justify-around">
-          {/* 댓글을 입력받는 텍스트 필드입니다. */}
-          <input
-            type="text"
-            className="shadow-lg ml-2 p-1 grow mb-4 border border-gray-300 rounded"
-            value={inputTxt}
-            onChange={(e) => setInputTxt(e.target.value)}
-          />
-          <Button className="basis-1/3" color="white" onClick={restartVideo}>
-            Try Again
+        <div className="w-full flex flex-row justify-around items-center p-3 gap-2">
+          <Button
+            className="flex justify-center item-center"
+            color="white"
+            onClick={restartVideo}
+          >
+            <CameraIcon strokeWidth={1} className="h-5 w-5"></CameraIcon>
           </Button>
-          <Button className="basis-1/3" color="white" onClick={savePhoto}>
-            OK
-          </Button>
+          <div className="relative w-full">
+            {/* 댓글을 입력받는 텍스트 필드입니다. */}
+            <Input
+              label="무엇을 느꼈나요? (최대 20자)"
+              placeholder={placeholder}
+              value={inputTxt}
+              maxLength={20}
+              onChange={(e) => setInputTxt(e.target.value)}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              className="text-white"
+            />
+            <Button
+              size="sm"
+              color={"indigo"}
+              className="!absolute right-1 top-1 rounded"
+              onClick={savePhoto}
+            >
+              <ChatBubbleLeftIcon
+                strokeWidth={1}
+                className="h-4 w-4"
+              ></ChatBubbleLeftIcon>
+            </Button>
+          </div>
         </div>
       )}
-        {emojiAlert&&
-        (<EmojiAlert/>)
-        }
+      <EmojiAlert open={alert} />
     </div>
   );
 };

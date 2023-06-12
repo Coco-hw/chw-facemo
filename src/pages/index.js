@@ -2,6 +2,7 @@ const inter = Inter({ subsets: ["latin"] });
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import { Button, Avatar, Typography } from "@material-tailwind/react";
+import { HomeIcon } from "@heroicons/react/24/solid";
 ///////////////////////////////////////////////////////////////////
 
 import React, { useState, useEffect, useRef } from "react";
@@ -17,58 +18,168 @@ import { useRouter } from "next/router";
 const contentList = [
   // \
   {
-    accountId: 3, 
+    accountId: 1,
+    contentId: 1,
+    contentSrc: "assets/chw-image_1.jpg",
+    contentTxt: "붉은머리오목눈이(뱁새): 갸웃?",
+  },
+  {
+    accountId: 1,
+    contentId: 2,
+    contentSrc: "assets/chw-image_2.jpg",
+    contentTxt: "",
+  },
+  {
+    accountId: 1,
+    contentId: 3,
+    contentSrc: "assets/chw-image_3.jpg",
+    contentTxt: "",
+  },
+  {
+    accountId: 1,
+    contentId: 4,
+    contentSrc: "assets/chw-image_4.jpg",
+    contentTxt: "",
+  },
+  {
+    accountId: 1,
+    contentId: 5,
+    contentSrc: "assets/chw-image_5.jpg",
+    contentTxt: "",
+  },
+  {
+    accountId: 1,
+    contentId: 6,
+    contentSrc: "assets/chw-image_6.jpg",
+    contentTxt: "",
+  },
+  {
+    accountId: 1,
+    contentId: 7,
+    contentSrc: "assets/chw-image_7.jpg",
+    contentTxt: "",
+  },
+  {
+    accountId: 1,
+    contentId: 8,
+    contentSrc: "assets/chw-image_8.jpg",
+    contentTxt: "",
+  },
+  {
+    accountId: 1,
+    contentId: 9,
+    contentSrc: "assets/chw-image_9.jpg",
+    contentTxt: "",
+  },
+  {
+    accountId: 3,
     contentId: 1,
     contentSrc: "assets/a3image1.jpg",
     contentTxt: "녹슨 자동차의 눈물",
   },
   {
-    accountId: 3, 
+    accountId: 3,
     contentId: 2,
     contentSrc: "assets/a3image2.jpg",
     contentTxt: "불맛 나는 차",
   },
   {
-    accountId: 3, 
+    accountId: 3,
     contentId: 3,
     contentSrc: "assets/a3image3.jpg",
     contentTxt: "현대 테라칸 (2001)",
   },
   {
-    accountId: 3, 
+    accountId: 3,
     contentId: 4,
     contentSrc: "assets/a3image4.jpg",
     contentTxt: "부가티 베이론 V12",
   },
   {
-    accountId: 3, 
+    accountId: 3,
     contentId: 5,
     contentSrc: "assets/a3image5.jpg",
     contentTxt: "빨간맛 페라리 캘리포니아",
   },
   {
-    accountId: 3, 
+    accountId: 3,
     contentId: 6,
     contentSrc: "assets/a3image6.jpg",
     contentTxt: "배기음의 마왕, 마세라티 그란투리스모",
   },
   {
-    accountId: 3, 
+    accountId: 3,
     contentId: 7,
     contentSrc: "assets/a3image7.jpg",
     contentTxt: "심해 자동차",
   },
   {
-    accountId: 3, 
+    accountId: 3,
     contentId: 8,
     contentSrc: "assets/a3image8.jpg",
     contentTxt: "폐차 시켜줘",
   },
   {
-    accountId: 3, 
+    accountId: 3,
     contentId: 9,
     contentSrc: "assets/a3image9.jpg",
     contentTxt: "부의 상징, 롤스로이스 팬텀",
+  },
+  {
+    accountId: 2,
+    contentId: 1,
+    contentSrc: "assets/magnolia.jpg",
+    contentTxt: "폴 토마스 앤더슨, <매그놀리아> (1999)",
+  },
+  {
+    accountId: 2,
+    contentId: 2,
+    contentSrc: "assets/paprika.jpg",
+    contentTxt: "콘 사토시, <파프리카>(2006)",
+  },
+
+  {
+    accountId: 2,
+    contentId: 3,
+    contentSrc: "assets/mauvais_sang.jpg",
+    contentTxt: "레오 까락스, <나쁜 피> (1986)",
+  },
+  {
+    accountId: 2,
+    contentId: 4,
+    contentSrc: "assets/lily_chouchou.jpg",
+    contentTxt: "이와이 슌지, <릴리 슈슈의 모든 것> (2001)",
+  },
+  {
+    accountId: 2,
+    contentId: 5,
+    contentSrc: "assets/space_odyssey_2001.jpg",
+    contentTxt: "스탠리 큐브릭, <2001 스페이스 오디세이> (1968)",
+  },
+  {
+    accountId: 2,
+    contentId: 6,
+    contentSrc: "assets/the_lobster.jpg",
+    contentTxt: "요르고스 란티모스, <더 랍스터> (2015)",
+  },
+
+  {
+    accountId: 2,
+    contentId: 7,
+    contentSrc: "assets/playtime.jpg",
+    contentTxt: "자크 타티, <플레이타임> (1967)",
+  },
+  {
+    accountId: 2,
+    contentId: 8,
+    contentSrc: "assets/nope.jpeg",
+    contentTxt: "조던 필, <놉> (2022)",
+  },
+  {
+    accountId: 2,
+    contentId: 9,
+    contentSrc: "assets/man_with_camera.jpg",
+    contentTxt: "지가 베르토프, <카메라를 든 사나이> (1929)",
   },
 ];
 
@@ -77,15 +188,15 @@ const contentList = [
 const accountList = [
   {
     accountId: 1, // account의 순서를 지정
-    accountName: "계정 1", // account의 이름 지정
+    accountName: "날으는솜뭉치", // account의 이름 지정
     accountSrc: "assets/image1.jpg", // account의 프로필 사진 지정
-    accountTxt: "소개 1", // account의 한 줄 소개 지정
+    accountTxt: "feat. 서울대학교 야조회", // account의 한 줄 소개 지정
   },
   {
     accountId: 2,
-    accountName: "계정 2",
-    accountSrc: "assets/image2.jpg",
-    accountTxt: "영화를 좋아해요.",
+    accountName: "영덕대게",
+    accountSrc: "assets/youngduck_crab.jpg",
+    accountTxt: "영화 덕후 대박 계정",
   },
   {
     accountId: 3,
@@ -124,6 +235,14 @@ export default function Home() {
   const [currentContentId, setCurrentContentId] = useState(null);
   // 전체 replyList를 담는 변수입니다.
   const [replyList, setReplyList] = useState([]); // { contentId, replyId, replyEmoji, replyTxt, timestamp, justUpdated}
+
+  // 아바타 보여줄지 말지를 결정
+  const [showAvatars, setShowAvatars] = useState(false);
+
+  const goToHome = () => {
+    setCurrentAccountId(-1);
+    setShowAvatars(false);
+  };
 
   // 비디오 Ref를 담는 변수입니다.
   const videoRef = useRef(null);
@@ -226,40 +345,95 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-white">
+    <div className="bg-white h-screen">
       {currentAccountId < 0 ? (
-        <HomePage
-          accountList={accountList}
-          handleAccountClick={setCurrentAccountId}
-        />
-      ) : (
         <div>
-          {/* Render thumbnails */}
-          {currentAccountId > 0 &&
-            contentList
-              .filter((content) => content.accountId === currentAccountId)
-              .map((content) => (
-                <Thumbnail
-                  key={content.contentId}
-                  content={content}
-                  openModal={openModal}
-                  setCurrentContentId={setCurrentContentId}
-                />
-              ))}
+          <HomePage
+            accountList={accountList}
+            handleAccountClick={setCurrentAccountId}
+            HomeIcon={HomeIcon}
+            showAvatars={showAvatars}
+            setShowAvatars={setShowAvatars}
+          />
         </div>
+      ) : (
+        <>
+          {/* 홈 버튼 */}
+          <button
+            className="absolute top-4 left-4 p-2 rounded-md bg-transparent hover:bg-white focus:outline-none"
+            onClick={goToHome}
+          >
+            <HomeIcon className="h-6 w-6 text-black opacity-75" />
+          </button>
+          <div className="flex flex-col justify-center items-center">
+            {/* Render accountSrc, accountName, accountTxt */}
+            <div className="">
+              {accountList
+                .filter((account) => account.accountId === currentAccountId)
+                .map((account) => (
+                  <div className="flex flex-row gap-5 mt-10 mb-10">
+                    <div>
+                      <Avatar
+                        src={account.accountSrc}
+                        alt={account.accountId}
+                        size="xxl"
+                        className="border-black border-1"
+                      />
+                    </div>
+                    <div className="flex flex-col justify-center gap-1">
+                      <Typography
+                        variant="h6"
+                        color="black"
+                        className="text-3xl"
+                      >
+                        {account.accountName}
+                      </Typography>
+                      <Typography
+                        variant="large"
+                        color="gray"
+                        className="font-normal"
+                      >
+                        {account.accountTxt}
+                      </Typography>
+                    </div>
+                  </div>
+                ))}
+            </div>
+            {/* Render thumbnails */}
+            <div className="grid grid-cols-3 gap-4">
+              {currentAccountId > 0 &&
+                contentList
+                  .filter((content) => content.accountId === currentAccountId)
+                  .map((content) => (
+                    <Thumbnail
+                      key={content.contentId}
+                      content={content}
+                      openModal={openModal}
+                      setCurrentContentId={setCurrentContentId}
+                    />
+                  ))}
+            </div>
+          </div>
+        </>
       )}
 
       {/* Render modal */}
       {modalOpened && (
-        <Modal
-          contentList={contentList}
-          replyList={replyList}
-          currentContentId={currentContentId}
-          closeModal={closeModal}
-          uploadReply={uploadReply}
-          videoRef={videoRef}
-          stopWebcam={stopWebcam}
-        />
+        <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center">
+          {/* 모달 창밖 레이어. 주변을 어둡게 하고 클릭 시 모달이 꺼지게 한다. -> 실행 안 됨. */}
+          <div onClick={closeModal}></div>
+          {/* 모달 창 */}
+          <Modal
+            contentList={contentList}
+            replyList={replyList}
+            currentAccountId={currentAccountId}
+            currentContentId={currentContentId}
+            closeModal={closeModal}
+            uploadReply={uploadReply}
+            videoRef={videoRef}
+            stopWebcam={stopWebcam}
+          />
+        </div>
       )}
     </div>
   );
