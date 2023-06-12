@@ -40,6 +40,7 @@ const Modal = ({
   const saveReply = () => {
     // { contentId, replyId, replyEmoji, replyTxt, timestamp }
     uploadReply({
+      accountId: currentAccountId,
       contentId: currentContentId,
       replyId: replyList.length,
       replyEmoji: currentEmoji,
@@ -80,7 +81,11 @@ const Modal = ({
   useEffect(() => {
     if (replyList) {
       setCurrentReplyList(
-        replyList.filter((item) => item.contentId === currentContentId)
+        replyList.filter(
+          (item) =>
+            item.accountId === currentAccountId &&
+            item.contentId === currentContentId
+        )
       );
     }
   }, [replyList]);
@@ -100,9 +105,9 @@ const Modal = ({
       </button>
 
       {/* image and {Bundle or replyList} box */}
-      <div className="flex flex-row h-{600}">
+      <div className="flex flex-row w-full h-{600}">
         {/* contentSrc(image) */}
-        <div className="relative">
+        <div className="relative basis-1/2">
           {/* <div> */}
           <img
             src={currentContent.contentSrc}

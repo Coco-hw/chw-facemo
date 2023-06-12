@@ -314,6 +314,7 @@ export default function Home() {
   const uploadReply = async (replyData) => {
     // Firestore에 추가한 replyData를 저장합니다.
     const docRef = await addDoc(facemoCollection, {
+      accountId: replyData.accountId,
       contentId: replyData.contentId,
       replyId: replyData.replyId,
       replyEmoji: replyData.replyEmoji,
@@ -334,6 +335,7 @@ export default function Home() {
     setReplyList([
       ...turnoffReplyList,
       {
+        accountId: replyData.accountId,
         contentId: replyData.contentId,
         replyId: replyData.replyId,
         replyEmoji: replyData.replyEmoji,
