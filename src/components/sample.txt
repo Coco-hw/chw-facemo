@@ -1,0 +1,219 @@
+///////////////////////////////////////////////////////
+// samples
+const contentList = [
+  // \
+  {
+    contentDB_id: 1,
+    accountId: 1,
+    contentId: 1,
+    contentSrc: "assets/chw-image_1.jpg",
+    contentTxt: "붉은머리오목눈이(뱁새): 갸웃?",
+  },
+  {
+    contentDB_id: 2,
+    accountId: 1,
+    contentId: 2,
+    contentSrc: "assets/chw-image_2.jpg",
+    contentTxt: "",
+  },
+  {
+    contentDB_id: 3,
+    accountId: 1,
+    contentId: 3,
+    contentSrc: "assets/chw-image_3.jpg",
+    contentTxt: "",
+  },
+  {
+    contentDB_id: 4,
+    accountId: 1,
+    contentId: 4,
+    contentSrc: "assets/chw-image_4.jpg",
+    contentTxt: "",
+  },
+  {
+    contentDB_id: 5,
+    accountId: 1,
+    contentId: 5,
+    contentSrc: "assets/chw-image_5.jpg",
+    contentTxt: "",
+  },
+  {
+    contentDB_id: 6,
+    accountId: 1,
+    contentId: 6,
+    contentSrc: "assets/chw-image_6.jpg",
+    contentTxt: "",
+  },
+  {
+    contentDB_id: 7,
+    accountId: 1,
+    contentId: 7,
+    contentSrc: "assets/chw-image_7.jpg",
+    contentTxt: "",
+  },
+  {
+    contentDB_id: 8,
+    accountId: 1,
+    contentId: 8,
+    contentSrc: "assets/chw-image_8.jpg",
+    contentTxt: "",
+  },
+  {
+    contentDB_id: 9,
+    accountId: 1,
+    contentId: 9,
+    contentSrc: "assets/chw-image_9.jpg",
+    contentTxt: "",
+  },
+  {
+    contentDB_id: 10,
+    accountId: 3,
+    contentId: 1,
+    contentSrc: "assets/a3image1.jpg",
+    contentTxt: "녹슨 자동차의 눈물",
+  },
+  {
+    contentDB_id: 11,
+    accountId: 3,
+    contentId: 2,
+    contentSrc: "assets/a3image2.jpg",
+    contentTxt: "불맛 나는 차",
+  },
+  {
+    contentDB_id: 12,
+    accountId: 3,
+    contentId: 3,
+    contentSrc: "assets/a3image3.jpg",
+    contentTxt: "현대 테라칸 (2001)",
+  },
+  {
+    contentDB_id: 13,
+    accountId: 3,
+    contentId: 4,
+    contentSrc: "assets/a3image4.jpg",
+    contentTxt: "부가티 베이론 V12",
+  },
+  {
+    contentDB_id: 14,
+    accountId: 3,
+    contentId: 5,
+    contentSrc: "assets/a3image5.jpg",
+    contentTxt: "빨간맛 페라리 캘리포니아",
+  },
+  {
+    contentDB_id: 15,
+    accountId: 3,
+    contentId: 6,
+    contentSrc: "assets/a3image6.jpg",
+    contentTxt: "배기음의 마왕, 마세라티 그란투리스모",
+  },
+  {
+    contentDB_id: 16,
+    accountId: 3,
+    contentId: 7,
+    contentSrc: "assets/a3image7.jpg",
+    contentTxt: "심해 자동차",
+  },
+  {
+    contentDB_id: 17,
+    accountId: 3,
+    contentId: 8,
+    contentSrc: "assets/a3image8.jpg",
+    contentTxt: "폐차 시켜줘",
+  },
+  {
+    contentDB_id: 18,
+    accountId: 3,
+    contentId: 9,
+    contentSrc: "assets/a3image9.jpg",
+    contentTxt: "부의 상징, 롤스로이스 팬텀",
+  },
+  {
+    contentDB_id: 19,
+    accountId: 2,
+    contentId: 1,
+    contentSrc: "assets/magnolia.jpg",
+    contentTxt: "폴 토마스 앤더슨, <매그놀리아> (1999)",
+  },
+  {
+    contentDB_id: 20,
+    accountId: 2,
+    contentId: 2,
+    contentSrc: "assets/paprika.jpg",
+    contentTxt: "콘 사토시, <파프리카>(2006)",
+  },
+
+  {
+    contentDB_id: 21,
+    accountId: 2,
+    contentId: 3,
+    contentSrc: "assets/mauvais_sang.jpg",
+    contentTxt: "레오 까락스, <나쁜 피> (1986)",
+  },
+  {
+    contentDB_id: 22,
+    accountId: 2,
+    contentId: 4,
+    contentSrc: "assets/lily_chouchou.jpg",
+    contentTxt: "이와이 슌지, <릴리 슈슈의 모든 것> (2001)",
+  },
+  {
+    contentDB_id: 23,
+    accountId: 2,
+    contentId: 5,
+    contentSrc: "assets/space_odyssey_2001.jpg",
+    contentTxt: "스탠리 큐브릭, <2001 스페이스 오디세이> (1968)",
+  },
+  {
+    contentDB_id: 24,
+    accountId: 2,
+    contentId: 6,
+    contentSrc: "assets/the_lobster.jpg",
+    contentTxt: "요르고스 란티모스, <더 랍스터> (2015)",
+  },
+
+  {
+    contentDB_id: 25,
+    accountId: 2,
+    contentId: 7,
+    contentSrc: "assets/playtime.jpg",
+    contentTxt: "자크 타티, <플레이타임> (1967)",
+  },
+  {
+    contentDB_id: 26,
+    accountId: 2,
+    contentId: 8,
+    contentSrc: "assets/nope.jpeg",
+    contentTxt: "조던 필, <놉> (2022)",
+  },
+  {
+    contentDB_id: 27,
+    accountId: 2,
+    contentId: 9,
+    contentSrc: "assets/man_with_camera.jpg",
+    contentTxt: "지가 베르토프, <카메라를 든 사나이> (1929)",
+  },
+];
+
+///////////////////////////////////////////////////
+// sample accounts
+const accountList = [
+  {
+    accountId: 1, // account의 순서를 지정
+    accountName: "날으는솜뭉치", // account의 이름 지정
+    accountSrc: "assets/image1.jpg", // account의 프로필 사진 지정
+    accountTxt: "feat. 서울대학교 야조회", // account의 한 줄 소개 지정
+  },
+  {
+    accountId: 2,
+    accountName: "영덕대게",
+    accountSrc: "assets/youngduck_crab.jpg",
+    accountTxt: "영화 덕후 대박 계정",
+  },
+  {
+    accountId: 3,
+    accountName: "관악구카푸어",
+    accountSrc: "assets/a3profilepic.jpg",
+    accountTxt: "카푸어가 되고 싶다고요? 그럼 들어오세요!",
+  },
+];
