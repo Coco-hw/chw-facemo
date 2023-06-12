@@ -24,12 +24,17 @@ const Modal = ({
   const [currentReplyList, setCurrentReplyList] = useState([]);
 
   // emoji를 저장할 useState, useRef 선언
-  const [currentEmoji, setCurrentEmoji] = useState("");
+  const [currentEmoji, setCurrentEmoji] = useState([]);
   const setCurrentEmojiRef = useRef();
   setCurrentEmojiRef.current = setCurrentEmoji;
 
   // replyTxt를 저장할 useState 선언
   const [inputTxt, setInputTxt] = useState("");
+  
+  // temporary text
+  const [sampleTxt, setSampleTxt] = useState("happy~");
+  const setSampleTxtRef = useRef();
+  setSampleTxtRef.current = setSampleTxt;
 
   // save and upload reply (in index)
   const saveReply = () => {
@@ -38,10 +43,11 @@ const Modal = ({
       contentId: currentContentId,
       replyId: replyList.length,
       replyEmoji: currentEmoji,
-      replyTxt: inputTxt,
+      replyTxt: inputTxt?inputTxt:sampleTxt,
       timestamp: Date.now(),
     });
     console.log(currentEmoji);
+    setInputTxt("");
   };
 
   // 외부에서 접근 가능한 interval reference 저장
@@ -118,14 +124,17 @@ const Modal = ({
             <div className="basis-1/2">
               <div className="h-full flex justify-center items-center">
                 <Bundle
-                  closeBundle={closeBundle}
-                  setCurrentEmojiRef={setCurrentEmojiRef}
-                  saveReply={saveReply}
-                  inputTxt={inputTxt}
-                  setInputTxt={setInputTxt}
-                  intervalRef={intervalRef}
-                  stopInterval={stopInterval}
-                  videoRef={videoRef}
+                closeBundle={closeBundle}
+                setCurrentEmojiRef={setCurrentEmojiRef}
+                currentEmoji={currentEmoji}
+                saveReply={saveReply}
+                inputTxt={inputTxt}
+                sampleTxt={sampleTxt}
+                setSampleTxtRef={setSampleTxtRef}
+                setInputTxt={setInputTxt}
+                intervalRef={intervalRef}
+                stopInterval={stopInterval}
+                videoRef={videoRef}
                 />
               </div>
             </div>
