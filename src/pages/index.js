@@ -48,6 +48,9 @@ export default function Home() {
   // 전체 accountList를 담는 변수입니다.
   const [accountList, setAccountList] = useState([]);
 
+  // replyCountList를 담는 변수입니다.
+  const [emojiCountList, setEmojiCountList] = useState([]);
+
   // 아바타 보여줄지 말지를 결정
   const [showAvatars, setShowAvatars] = useState(false);
 
@@ -122,7 +125,6 @@ export default function Home() {
       newContent.push({ ...doc.data()});
     });
     setContentList(newContent);
-    console.log(contentList.length);
   }
   const getAccount = async() => {
     // Firestore 쿼리 만들기
@@ -161,6 +163,42 @@ export default function Home() {
     getContent();
     getReply();
   }, []);
+
+  // emojiCount 업데이트
+  const updateEmojiCountList = () => {
+    let newEmojiCountList = [];
+    contentList
+      .filter((content)=> content.accountId===currentAccountId)
+      .forEach((content)=>{
+        // for each contentId,
+        let emojiCount = {
+          angry:0,
+          disgusted:0,
+          fearful:0,
+          happy:0,
+          neutral:0,
+          sad:0,
+          surprised:0
+        }
+        replyList
+          .filter((reply)=>reply.accountId===currentAccountId && reply.contentId===content.contentId)
+          .forEach((reply)=>{
+            reply.replyEmoji.forEach((emoji)=>{
+              emojiCount[emoji] = emojiCount[emoji]+1;
+            });
+          });
+        newEmojiCountList.push({contentId:content.contentId, emojiCount:emojiCount});
+      });
+    console.log(newEmojiCountList);
+    setEmojiCountList(newEmojiCountList);
+  }
+
+  // replyList가 바뀔 때마다 emojiCount 업데이트
+  useEffect(() => {
+    if(currentAccountId > 0){
+      updateEmojiCountList();
+    }
+  }, [currentAccountId, replyList]);
 
   // 기존의 updatedStatus를 false로 변경합니다.
   const turnoffReply = () => {
@@ -272,6 +310,7 @@ export default function Home() {
                   .filter((content) => content.accountId === currentAccountId)
                   .map((content) => (
                     <Thumbnail
+                      emojiCountList={emojiCountList}
                       key={content.contentId}
                       content={content}
                       openModal={openModal}
