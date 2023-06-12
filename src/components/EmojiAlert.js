@@ -14,7 +14,7 @@ const EmojiAlert = ({ open }) => {
           mount: { y: 0 },
           unmount: { y: 100 },
         }}
-        className="absolute"
+        className="absolute bottom-12"
       >
         <Typography variant="h5" color="white">
           표정 분석에 실패했어요!

@@ -55,7 +55,7 @@ const Intro = () => {
 
   // export default Intro;
   return (
-    <div className="flex flex-col overflow-hidden">
+    <div className="absolute -top-20 flex flex-col overflow-hidden">
       <div className="flex justify-around animate-slide-left">
         <img
           src="assets/angry_emoji.png"

@@ -13,7 +13,7 @@ const mapEmoji = {
 };
 
 const Emoji = ({ replyData }) => {
-  const justUpdatedClassName = "text-6xl animate-bounce";
+  const justUpdatedClassName = "text-6xl animate-bounce z-20";
   const notUpdatedClassName = "text-6xl";
   const [isHovered, setIsHovered] = useState(false);
   const txtEmoji = replyData.replyEmoji

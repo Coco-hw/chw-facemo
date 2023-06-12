@@ -147,10 +147,10 @@ const Modal = ({
             </div>
           </div>
         ) : (
-          <div className="basis-1/2 flex flex-col bg-gray-200 p-10">
+          <div className="basis-1/2 flex flex-col bg-gray-200 p-10 z-10">
             {/* emoji list */}
             <div className="h-full overflow-auto">
-              <div className="flex flex-wrap justify-start p-1">
+              <div className="flex flex-wrap justify-start p-1 z-20">
                 {currentReplyList.map((replyData) => (
                   <Emoji replyData={replyData} />
                 ))}

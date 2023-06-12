@@ -31,7 +31,7 @@ const HomePage = ({
 
           <div className="flex flex-col justify-center items-center gap-6 h-screen space-y-10">
             <div className="text-6xl font-bold tracking-tight text-black">
-              마음에 드는 계정을 선택해주세요
+              Welcome to Our Home
             </div>
             {accountList.map((account) => (
               <div className="flex items-center justify-center gap-6 w-1/2">
@@ -69,14 +69,11 @@ const HomePage = ({
           </div>
         </>
       ) : (
-        <div className="relative">
-          <div className="absolute inset-0 z-0">
-            <div className="absolute w-screen h-screen inset-0 z-10 bg-black opacity-30"></div>
-            <Intro />
-          </div>
-
+        <div className="relative x-0 y-0 w-screen h-screen">
+          <div className="absolute w-screen h-screen inset-0 z-10 bg-black opacity-30"></div>
+          <Intro />
           <div className="absolute inset-0 z-20">
-            <div className="flex flex-col justify-center items-center h-screen">
+            <div className="flex flex-col justify-center items-center h-screen bg-slate-300">
               <div className="text-center mb-20 text-9xl font-bold tracking-tight text-black">
                 FacEMO.
               </div>
