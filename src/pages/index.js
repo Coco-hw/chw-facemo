@@ -1,25 +1,8 @@
 const inter = Inter({ subsets: ["latin"] });
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-import {
-  Button,
-  Avatar,
-  Typography,
-  Card,
-  List,
-  ListItem,
-  ListItemPrefix,
-  ListItemSuffix,
-  Chip,
-} from "@material-tailwind/react";
-import {
-  PresentationChartBarIcon,
-  ShoppingBagIcon,
-  UserCircleIcon,
-  Cog6ToothIcon,
-  InboxIcon,
-  PowerIcon,
-} from "@heroicons/react/24/solid";
+import { Button, Avatar, Typography } from "@material-tailwind/react";
+import { HomeIcon } from "@heroicons/react/24/solid";
 ///////////////////////////////////////////////////////////////////
 
 import React, { useState, useEffect, useRef } from "react";
@@ -35,115 +18,109 @@ import { useRouter } from "next/router";
 const contentList = [
   // \
   {
-    accountId: 1, 
+    accountId: 1,
     contentId: 1,
-    contentSrc: "chw-image_1.jpg",
+    contentSrc: "assets/chw-image_1.jpg",
     contentTxt: "붉은머리오목눈이(뱁새): 갸웃?",
   },
   {
-    accountId: 1, 
+    accountId: 1,
     contentId: 2,
-    contentSrc: "chw-image_2.jpg",
+    contentSrc: "assets/chw-image_2.jpg",
     contentTxt: "",
   },
   {
-    accountId: 1, 
+    accountId: 1,
     contentId: 3,
-    contentSrc: "chw-image_3.jpg",
+    contentSrc: "assets/chw-image_3.jpg",
     contentTxt: "",
   },
   {
-    accountId: 1, 
+    accountId: 1,
     contentId: 4,
-    contentSrc: "chw-image_4.jpg",
+    contentSrc: "assets/chw-image_4.jpg",
     contentTxt: "",
   },
   {
-    accountId: 1, 
+    accountId: 1,
     contentId: 5,
-    contentSrc: "chw-image_5.jpg",
+    contentSrc: "assets/chw-image_5.jpg",
     contentTxt: "",
   },
   {
-    accountId: 1, 
+    accountId: 1,
     contentId: 6,
-    contentSrc: "chw-image_6.jpg",
+    contentSrc: "assets/chw-image_6.jpg",
     contentTxt: "",
   },
   {
-    accountId: 1, 
+    accountId: 1,
     contentId: 7,
-    contentSrc: "chw-image_7.jpg",
+    contentSrc: "assets/chw-image_7.jpg",
     contentTxt: "",
   },
   {
-    accountId: 1, 
+    accountId: 1,
     contentId: 8,
-    contentSrc: "chw-image_8.jpg",
+    contentSrc: "assets/chw-image_8.jpg",
     contentTxt: "",
   },
   {
-    accountId: 1, 
+    accountId: 1,
     contentId: 9,
-    contentSrc: "chw-image_9.jpg",
+    contentSrc: "assets/chw-image_9.jpg",
     contentTxt: "",
   },
   {
-    accountId: 3, 
+    accountId: 3,
     contentId: 1,
     contentSrc: "assets/a3image1.jpg",
     contentTxt: "",
   },
   {
-    accountId: 3, 
-    contentId: 1,
-    contentSrc: "assets/a3image1.jpg",
-    contentTxt: "",
-  },
-  {
-    accountId: 3, 
+    accountId: 3,
     contentId: 2,
     contentSrc: "assets/a3image2.jpg",
     contentTxt: "",
   },
   {
-    accountId: 3, 
+    accountId: 3,
     contentId: 3,
     contentSrc: "assets/a3image3.jpg",
     contentTxt: "",
   },
   {
-    accountId: 3, 
+    accountId: 3,
     contentId: 4,
     contentSrc: "assets/a3image4.jpg",
     contentTxt: "",
   },
   {
-    accountId: 3, 
+    accountId: 3,
     contentId: 5,
     contentSrc: "assets/a3image5.jpg",
     contentTxt: "",
   },
   {
-    accountId: 3, 
+    accountId: 3,
     contentId: 6,
     contentSrc: "assets/a3image6.jpg",
     contentTxt: "",
   },
   {
-    accountId: 3, 
+    accountId: 3,
     contentId: 7,
     contentSrc: "assets/a3image7.jpg",
     contentTxt: "",
   },
   {
-    accountId: 3, 
+    accountId: 3,
     contentId: 8,
     contentSrc: "assets/a3image8.jpg",
     contentTxt: "",
   },
   {
-    accountId: 3, 
+    accountId: 3,
     contentId: 9,
     contentSrc: "assets/a3image9.jpg",
     contentTxt: "",
