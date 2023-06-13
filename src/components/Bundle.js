@@ -158,11 +158,6 @@ const Bundle = ({
 
   // stream and set detect interval
   const streamDetect = async () => {
-    // start webcam
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: false,
-    });
 
     // get all faceapi models
     await Promise.all([
@@ -172,6 +167,12 @@ const Bundle = ({
       faceapi.nets.faceExpressionNet.loadFromUri("/models"),
       stopInterval(),
     ]);
+
+    // start webcam
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: false,
+    });
 
     // get video & canvas
     const video = videoRef.current;

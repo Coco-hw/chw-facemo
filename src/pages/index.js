@@ -89,6 +89,7 @@ export default function Home() {
     setModalOpened(false);
     setCurrentContentId(null);
     turnoffReply();
+    console.log("here!");
   };
 
   // const [s, sets] = useState(true);
@@ -192,7 +193,6 @@ export default function Home() {
           });
         newEmojiCountList.push({contentId:content.contentId, emojiCount:emojiCount});
       });
-    console.log(newEmojiCountList);
     setEmojiCountList(newEmojiCountList);
   }
 
@@ -252,7 +252,7 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-white h-screen">
+    <div className="relative bg-white w-screen p-8">
       {currentAccountId < 0 ? (
         <div>
           <HomePage
@@ -330,27 +330,18 @@ export default function Home() {
       )}
 
       {/* Render modal */}
-      {modalOpened && (
-        <>
-          <div className="absolute w-screen h-screen inset-0 bg-black opacity-60"></div>
-          <div
-            className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-30"
-            onClick={closeModal}
-          >
-            {/* 모달 창 */}
-            <Modal
-              contentList={contentList}
-              replyList={replyList}
-              currentAccountId={currentAccountId}
-              currentContentId={currentContentId}
-              closeModal={closeModal}
-              uploadReply={uploadReply}
-              videoRef={videoRef}
-              stopWebcam={stopWebcam}
-            />
-          </div>
-        </>
-      )}
+      {modalOpened &&
+        <Modal
+          contentList={contentList}
+          replyList={replyList}
+          currentAccountId={currentAccountId}
+          currentContentId={currentContentId}
+          closeModal={closeModal}
+          uploadReply={uploadReply}
+          videoRef={videoRef}
+          stopWebcam={stopWebcam}
+        />
+      }
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Fragment } from "react";
 import Bundle from "@/components/Bundle";
 import Emoji from "@/components/Emoji";
 import { Button, Typography } from "@material-tailwind/react";
@@ -92,26 +92,28 @@ const Modal = ({
 
   // Render
   return (
-    <div
-      className="relative flex w-2/3 h-2/3"
-      onClick={(e) => e.stopPropagation()}
-    >
-      {/* 화면 밖 누르면 모달 꺼지게 구현하고 싶었으나 실패. 부모요소에 onClick 두면 모달 안쪽 눌러도 꺼짐. */}
-      {/* <div className=" h-screen" onClick={closeBundleModal}></div> */}
-      {/* <div className="relative bg-transparent w-4/5"> */}
-      {/* close button */}
-      <button
-        className="absolute top-2 right-2 text-gray-500"
-        onClick={closeBundleModal}
-      >
-        <XMarkIcon strokeWidth={2} className="h-10 w-10"></XMarkIcon>
-      </button>
+    <Fragment>
+    <div className="absolute top-0 left-0 w-full h-screen bg-black opacity-60"></div>
 
-      {/* image and {Bundle or replyList} box */}
-      <div className="flex flex-row w-full h-{600}">
+    <div 
+      className="absolute top-0 left-0 w-full h-screen flex items-center justify-center"
+      onClick={closeBundleModal}
+    >
+      {/* container */}
+      <div
+        className="relative bg-white flex w-2/3 h-3/4"
+        onClick={(e) => {e.stopPropagation()}}
+      >
+        {/* close button */}
+        <button
+          className="absolute top-2 right-2 text-gray-500 z-30"
+          onClick={closeBundleModal}
+        >
+          <XMarkIcon strokeWidth={2} className="h-10 w-10"></XMarkIcon>
+        </button>
+
         {/* contentSrc(image) */}
         <div className="relative basis-1/2">
-          {/* <div> */}
           <img
             src={currentContent.contentSrc}
             alt={`Content ${currentContentId}`}
@@ -124,14 +126,13 @@ const Modal = ({
               </Typography>
             </div>
           </div>
-          {/* </div> */}
         </div>
 
         {/* Bundle or emojiList */}
         {bundleOpened ? (
           <div className="relative basis-1/2">
             <Button
-              className="absolute top-3 left-2"
+              className="absolute top-3 left-2 z-30"
               color="indigo"
               size="sm"
               onClick={closeBundle}
@@ -155,10 +156,10 @@ const Modal = ({
             </div>
           </div>
         ) : (
-          <div className="basis-1/2 flex flex-col bg-gray-200 p-10">
+          <div className="relative basis-1/2 flex flex-col bg-gray-200">
             {/* emoji list */}
             <div className="h-full overflow-visible overflow-auto hide-scrollbar">
-              <div className="flex flex-wrap justify-start p-1">
+              <div className="flex flex-wrap justify-start pt-10 ps-5">
                 {currentReplyList.map((replyData) => (
                   <Emoji replyData={replyData} />
                 ))}
@@ -179,8 +180,9 @@ const Modal = ({
           </div>
         )}
       </div>
-      {/* </div> */}
+      {/* end of container */}
     </div>
+    </Fragment>
   );
 };
 

@@ -14,8 +14,8 @@ const Thumbnail = ({ content, emojiCount, openModal, setCurrentContentId }) => {
 
   const handleClick = (e) => {
     e.stopPropagation(); // 클릭 이벤트 전파 방지
-    openModal();
     setCurrentContentId(contentId);
+    openModal();
   };
 
   return (
