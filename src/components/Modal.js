@@ -97,11 +97,11 @@ const Modal = ({
       onClick={(e) => e.stopPropagation()}
     >
       {/* 화면 밖 누르면 모달 꺼지게 구현하고 싶었으나 실패. 부모요소에 onClick 두면 모달 안쪽 눌러도 꺼짐. */}
-      {/* <div className="z-10 h-screen" onClick={closeBundleModal}></div> */}
-      {/* <div className="relative bg-transparent w-4/5 z-20"> */}
+      {/* <div className=" h-screen" onClick={closeBundleModal}></div> */}
+      {/* <div className="relative bg-transparent w-4/5"> */}
       {/* close button */}
       <button
-        className="absolute top-2 right-2 text-gray-500 z-20"
+        className="absolute top-2 right-2 text-gray-500"
         onClick={closeBundleModal}
       >
         <XMarkIcon strokeWidth={2} className="h-10 w-10"></XMarkIcon>
@@ -131,7 +131,7 @@ const Modal = ({
         {bundleOpened ? (
           <div className="relative basis-1/2">
             <Button
-              className="absolute top-3 left-2 z-20"
+              className="absolute top-3 left-2"
               color="indigo"
               size="sm"
               onClick={closeBundle}
@@ -155,10 +155,10 @@ const Modal = ({
             </div>
           </div>
         ) : (
-          <div className="basis-1/2 flex flex-col bg-gray-200 p-10 z-10">
+          <div className="basis-1/2 flex flex-col bg-gray-200 p-10">
             {/* emoji list */}
-            <div className="h-full overflow-auto overflow-y-scroll hide-scrollbar">
-              <div className="flex flex-wrap justify-start p-1 z-20">
+            <div className="h-full overflow-visible overflow-auto hide-scrollbar">
+              <div className="flex flex-wrap justify-start p-1">
                 {currentReplyList.map((replyData) => (
                   <Emoji replyData={replyData} />
                 ))}

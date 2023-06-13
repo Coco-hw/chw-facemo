@@ -13,9 +13,7 @@ const mapEmoji = {
 };
 
 const Emoji = ({ replyData }) => {
-  const justUpdatedClassName = "relative text-6xl animate-bounce z-30";
-  const notUpdatedClassName = "relative text-6xl";
-  const [isHovered, setIsHovered] = useState(false);
+  const bounce = " motion-safe:animate-bounce";
   const [textBubble, setTextBubble] = useState(false);
   const txtEmoji = replyData.replyEmoji.map((emoji) => mapEmoji[emoji]).join("");
 
@@ -25,20 +23,16 @@ const Emoji = ({ replyData }) => {
   }, []);
 
   const handleMouseEnter = () => {
-    setIsHovered(true);
+    // if ever hovered, end justUpdated status!
+    if(replyData.justUpdated){
+      replyData.justUpdated=false;
+    }
     setTextBubble(true);
   };
 
   const handleMouseLeave = () => {
-    setIsHovered(false);
-    if (!replyData.justUpdated) {
-      setTextBubble(false);
-    }
+    setTextBubble(false);
   };
-
-  useEffect(() => {
-    console.log(isHovered);
-  });
 
   useEffect(() => {
     if (replyData.justUpdated) {
@@ -47,23 +41,34 @@ const Emoji = ({ replyData }) => {
   }, [replyData.justUpdated]);
 
   return (
-    <div
-      className={
-        replyData.justUpdated ? justUpdatedClassName : notUpdatedClassName
-      }
+    <div 
+      className="relative m-1"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div key={replyData.replyId}>{txtEmoji}</div>
+      <div 
+        className= {"text-6xl"+(textBubble?bounce:"")}
+        key={replyData.replyId}
+      >
+        {txtEmoji}
+      </div>
+
       {textBubble && (
-        <div className="absolute -top-20 w-[100px] h-[100px] z-30">
-          <img
-            className="w-full h-full"
-            src="assets/text_bubble.png"
-            alt="Text Bubble"
-          />
-          <div className="w-full h-full text-xs">
-            {replyData.replyTxt}
+        <div className={"absolute -top-20 w-[100px] h-[80px]"+(textBubble?bounce:"")}>
+          <div className="relative w-full h-full">
+
+            <img
+              className="absolute w-full h-full"
+              src="assets/text_bubble.png"
+              alt="Text Bubble"
+            />
+
+            <div className="relative flex flex-col justify-center w-full h-2/3">
+              <span className="absolute w-full text-center text-xs">
+                {replyData.replyTxt}
+              </span>
+            </div>
+
           </div>
         </div>
       )}

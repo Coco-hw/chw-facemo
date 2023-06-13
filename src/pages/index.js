@@ -332,13 +332,11 @@ export default function Home() {
       {/* Render modal */}
       {modalOpened && (
         <>
-          <div className="absolute w-screen h-screen inset-0 z-10 bg-black opacity-60 z-0"></div>
+          <div className="absolute w-screen h-screen inset-0 bg-black opacity-60"></div>
           <div
-            className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-10"
+            className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-30"
             onClick={closeModal}
           >
-            {/* 모달 창밖 레이어. 주변을 어둡게 하고 클릭 시 모달이 꺼지게 한다. -> 실행 안 됨. */}
-            <div></div>
             {/* 모달 창 */}
             <Modal
               contentList={contentList}
