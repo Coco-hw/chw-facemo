@@ -50,6 +50,8 @@ export default function Home() {
 
   // replyCountList를 담는 변수입니다.
   const [emojiCountList, setEmojiCountList] = useState([]);
+  // 임시 replyCount입니다.
+  const tempEmojiCount = {angry:0,disgusted:0,fearful:0,happy:0,neutral:0,sad:0,surprised:0};
 
   // 아바타 보여줄지 말지를 결정
   const [showAvatars, setShowAvatars] = useState(false);
@@ -311,7 +313,11 @@ export default function Home() {
                   .filter((content) => content.accountId === currentAccountId)
                   .map((content) => (
                     <Thumbnail
-                      emojiCountList={emojiCountList}
+                      emojiCount={
+                        emojiCountList.length
+                        ?emojiCountList.find((item)=>item.contentId===content.contentId).emojiCount
+                        :tempEmojiCount
+                      }
                       key={content.contentId}
                       content={content}
                       openModal={openModal}
