@@ -31,7 +31,7 @@ const Thumbnail = ({ content, emojiCountList, openModal, setCurrentContentId }) 
     else{
       setCountValid(false);
     }
-  });
+  },[emojiCountList]);
 
   return (
     <button className="relative w-30 h-30 overflow-hidden" onClick={handleClick}>

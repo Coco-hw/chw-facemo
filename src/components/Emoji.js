@@ -13,12 +13,11 @@ const mapEmoji = {
 };
 
 const Emoji = ({ replyData }) => {
-  const justUpdatedClassName = "text-6xl animate-bounce z-20";
-  const notUpdatedClassName = "text-6xl";
+  const justUpdatedClassName = "relative text-6xl animate-bounce z-30";
+  const notUpdatedClassName = "relative text-6xl";
   const [isHovered, setIsHovered] = useState(false);
-  const txtEmoji = replyData.replyEmoji
-    .map((emoji) => mapEmoji[emoji])
-    .join("");
+  const [textBubble, setTextBubble] = useState(false);
+  const txtEmoji = replyData.replyEmoji.map((emoji) => mapEmoji[emoji]).join("");
 
   useEffect(() => {
     console.log(txtEmoji);
@@ -27,15 +26,25 @@ const Emoji = ({ replyData }) => {
 
   const handleMouseEnter = () => {
     setIsHovered(true);
+    setTextBubble(true);
   };
 
   const handleMouseLeave = () => {
     setIsHovered(false);
+    if (!replyData.justUpdated) {
+      setTextBubble(false);
+    }
   };
 
   useEffect(() => {
     console.log(isHovered);
   });
+
+  useEffect(() => {
+    if (replyData.justUpdated) {
+      setTextBubble(true);
+    }
+  }, [replyData.justUpdated]);
 
   return (
     <div
@@ -45,16 +54,21 @@ const Emoji = ({ replyData }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <Tooltip
-        content={replyData.replyTxt}
-        animate={{
-          mount: { scale: 1, y: 0 },
-          unmount: { scale: 0, y: 25 },
-        }}
-      >
-        <div key={replyData.replyId}>{txtEmoji}</div>
-      </Tooltip>
+      <div key={replyData.replyId}>{txtEmoji}</div>
+      {textBubble && (
+        <div className="absolute -top-20 w-[100px] h-[100px] z-30">
+          <img
+            className="w-full h-full"
+            src="assets/text_bubble.png"
+            alt="Text Bubble"
+          />
+          <div className="w-full h-full text-xs">
+            {replyData.replyTxt}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
+
 export default Emoji;
